@@ -2,9 +2,8 @@
 using ForgeEventApp.Interfaces;
 using ForgeEventApp.Models;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
 
-namespace ForgeEventApp.Services
+namespace ForgeEventApp.Repositories
 {
     public class CategoryRepository : ICategoryRepository
 	{

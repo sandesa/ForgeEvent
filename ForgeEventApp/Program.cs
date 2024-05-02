@@ -2,9 +2,7 @@ using ForgeEventApp.Components;
 using ForgeEventApp.Data;
 using ForgeEventApp.Interfaces;
 using ForgeEventApp.Repositories;
-using ForgeEventApp.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +17,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
