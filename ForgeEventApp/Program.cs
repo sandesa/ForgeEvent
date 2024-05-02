@@ -1,4 +1,5 @@
 using ForgeEventApp.Components;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,5 +24,13 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    await EventSeedData.InitializeAsync(context);
+    SampleData.Create(context);
+}
 
 app.Run();
