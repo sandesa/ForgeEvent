@@ -56,6 +56,8 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
+    await UserData.InitializeAsync(context);
+    await CategorySeedData.InitializeAsync(context);
     await EventSeedData.InitializeAsync(context);
 }
 
