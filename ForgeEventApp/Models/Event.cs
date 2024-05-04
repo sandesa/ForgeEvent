@@ -21,9 +21,9 @@ namespace ForgeEventApp.Models
         public string Description { get; set;}
         [Required(ErrorMessage = "required ticket price")]
         public decimal Price { get; set; }
-        [Required(ErrorMessage = "required event category")]
-        public Category Category { get; set; }
-        [Required(ErrorMessage = "euerror")]
-        public User User { get; set; }
+        //[Required(ErrorMessage = "required event category")] 
+        public Category? Category { get; set; }
+        //[Required(ErrorMessage = "euerror")]
+        public User? User { get; set; }
     }
 }

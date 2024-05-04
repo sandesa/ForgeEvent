@@ -52,4 +52,11 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    await EventSeedData.InitializeAsync(context);
+}
+
 app.Run();
