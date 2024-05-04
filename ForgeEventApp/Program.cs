@@ -1,4 +1,9 @@
 using ForgeEventApp.Components;
+using ForgeEventApp.Data;
+using ForgeEventApp.Interfaces;
+using ForgeEventApp.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,7 +57,6 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
     await EventSeedData.InitializeAsync(context);
-    SampleData.Create(context);
 }
 
 app.Run();
