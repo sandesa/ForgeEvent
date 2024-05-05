@@ -1,0 +1,41 @@
+﻿@page "/eventindex"
+@using ForgeEventApp.Interfaces
+@using ForgeEventApp.Models
+@attribute [StreamRendering]
+
+<h3>EventIndex</h3>
+
+@if (events == null)
+{
+    <p>Loading...</p>
+}
+else if (events.Any())
+{
+    <ul class="event-container">
+        @foreach (var ev in events)
+        {
+            <li class="event-card">
+                <img src="@ev.ImageUrl" alt="@ev.Name" style="max-width: 100px; max-height: 100px;" />
+                <div>@ev.Name</div>
+                <div>When: @ev.Date</div>
+                <div>Where: @ev.Address</div>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No events found.</p>
+}
+
+@code {
+    private IEnumerable<Event> events;
+
+    protected override async Task OnInitializedAsync()
+    {
+        events = await eventRepository.GetAllEventsAsync();
+    }
+
+    [Inject]
+    private IEventRepository eventRepository { get; set; }
+}
