@@ -1,5 +1,9 @@
 ﻿using ForgeEventApp.Clients;
 using ForgeEventApp.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForgeEventApp.Data
 {
@@ -130,7 +134,7 @@ namespace ForgeEventApp.Data
                         Description = "Explore fascinating experiments and innovations in science.",
                         Price = 10.00m,
                         Category = categories[2].Name,
-                        User = users.FirstOrDefault(u => u.Id == 2
+                        User = users.FirstOrDefault(u => u.Id == 2)
                     },
                     new() 
                     {
