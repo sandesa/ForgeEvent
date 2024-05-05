@@ -1,9 +1,11 @@
-﻿using ForgeEventApp.Clients;
+
+using ForgeEventApp.Clients;
 using ForgeEventApp.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace ForgeEventApp.Data
 {
@@ -14,9 +16,11 @@ namespace ForgeEventApp.Data
             if (!context.Events.Any())
             {
 
+
                 Category[] categories = new CategoriesClient().GetCategories;
                 await UserData.InitializeAsync(context);
                 var users = await context.Users.ToListAsync();
+
                 var events = new List<Event>
                 {
                     new()

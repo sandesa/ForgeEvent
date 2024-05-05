@@ -23,6 +23,7 @@ namespace ForgeEventApp.Models
         public decimal Price { get; set; }
         //[Required(ErrorMessage = "required event category")] 
         public string? Category { get; set; }
+
         //[Required(ErrorMessage = "euerror")]
         public User? User { get; set; }
     }
