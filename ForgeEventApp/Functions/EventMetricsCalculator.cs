@@ -42,7 +42,7 @@ namespace ForgeEventApp.Functions
         {
             int rating = 0;
 
-
+            // rating model
 
             return rating;
         }
