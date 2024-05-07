@@ -11,5 +11,6 @@ namespace ForgeEventApp.Data
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<Event> Events { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
     }
 }
