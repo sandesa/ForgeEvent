@@ -46,5 +46,12 @@ namespace ForgeEventApp.Functions
 
             return rating;
         }
+
+        public double AverageRating()
+        {
+            double total = 0;
+
+            return total;
+        }
     }
 }
