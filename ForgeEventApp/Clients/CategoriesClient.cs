@@ -13,17 +13,17 @@ namespace ForgeEventApp.Clients
                 },
                 new()
                 {
-                    Id = 2,
+                    Id = 2, 
                     Name = "Technology"
                 },
                 new()
                 {
-                    Id = 3,
+                    Id = 3, 
                     Name = "Food & Drinks"
                 },
                 new()
                 {
-                    Id = 4,
+                    Id = 4, 
                     Name = "Sports"
                 },
                 new()
@@ -33,13 +33,18 @@ namespace ForgeEventApp.Clients
                 },
                 new()
                 {
-                    Id = 6,
+                    Id = 6, 
                     Name = "Fashion"
                 },
                 new()
                 {
                     Id = 7,
                     Name = "Comedy"
+                },
+                new()
+                {
+                    Id = 8,
+                    Name = "Film"
                 },
             ];
         public Category[] GetCategories => categories;
