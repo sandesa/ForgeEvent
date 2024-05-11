@@ -1,0 +1,47 @@
+﻿@page "/createeventpage"
+
+<h3>CreateEventPage</h3>
+
+<form class="row g-3">
+    <div class="col-md-6">
+        <label for="inputEventName" class="form-label">Event name</label>
+        <input type="text" class="form-control" id="inputEventName">
+    </div>
+    <div class="col-12">
+        <label for="inputAddress" class="form-label">Address</label>
+        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+    </div>
+    <div class="col-md-4">
+        <label for="inputCategory" class="form-label">Category</label>
+        <select id="inputCategory" class="form-select">
+            <option selected="">Category</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="inputDescription" class="form-label">Description</label>
+        <textarea class="form-control" id="inputDescription" rows="3"></textarea>
+    </div>
+    <div class="col-md-6">
+        <label for="inputEventTicketAmount" class="form-label">Ticket Amount</label>
+        <input type="number" class="form-control" id="inputEventTicketAmount">
+    </div>
+    <div class="col-md-6">
+        <label for="inputEventTicketPirce" class="form-label">Ticket Price</label>
+        <input type="number" class="form-control" id="inputEventTicketPirce">
+    </div>
+    <div class="col-md-6">
+        <label for="inputEventDate" class="form-label">Ticket Price</label>
+        <input type="date" class="form-control" id="inputEventDate">
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Create Event</button>
+    </div>
+</form>
+
+@code {
+
+}
