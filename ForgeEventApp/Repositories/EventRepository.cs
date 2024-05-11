@@ -18,5 +18,18 @@ namespace ForgeEventApp.Repositories
 			return await _context.Events.Select(e => e).ToListAsync();
 		}
 
+		public async Task<int> GetTicketAmountAsync(int id)
+		{
+			Event ev = await _context.Events.FindAsync(id);
+
+			return ev?.TicketAmount ?? 0;
+		}
+
+		public async Task<decimal> GetTicketPriceAsync(int id)
+		{
+            Event ev = await _context.Events.FindAsync(id);
+
+            return ev?.Price ?? 0;
+        }
 	}
 }
