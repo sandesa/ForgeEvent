@@ -39,12 +39,12 @@ namespace ForgeEventApp.Repositories
 				Name = events.Name,
 				Address = events.Address,
 				Description = events.Description,
-				Category = events.Category,
+				//Category = events.Category,
 				Price = events.Price,
 				TicketAmount = events.TicketAmount,
 				Date = events.Date,
-				CreatedAt = events.CreatedAt,
-				ImageUrl = events.ImageUrl,
+				CreatedAt = DateTime.Now,
+				//ImageUrl = events.ImageUrl,
 			};
             await _context.Events.AddAsync(newEvent);
             await _context.SaveChangesAsync();
