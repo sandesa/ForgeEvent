@@ -51,9 +51,6 @@
     padding-bottom: 0.5rem;
 }
 
-    .nav-item:first-of-type {
-        padding-top: 1rem;
-    }
 
     .nav-item:last-of-type {
         padding-bottom: 1rem;

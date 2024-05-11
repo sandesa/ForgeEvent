@@ -1,20 +1,36 @@
-﻿namespace ForgeEventApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ForgeEventApp.Models
 {
     public enum Role
     {
-        User,
-        Admin
+        User = 0,
+        Admin = 1
     }
 
     public class User
     {
         public int Id { get; set; }
-        public required Role Role { get; set; }
+
+        [Required(ErrorMessage = "Error R")]
+        public Role Role { get; set; }
+
+        [Required(ErrorMessage = "Required first name")]
         public required string FirstName { get; set; }
-        public required string LastName { get; set; }
+
+        [Required(ErrorMessage = "Required last name")]
+		public required string LastName { get; set; }
+
+        [Required(ErrorMessage = "Required email")]
         public required string Email { get; set; }
-        public string? PhoneNumber { get; set; }
-        public required string Password { get; set; }
-        public string? Salt { get; set; }
+
+        [Required(ErrorMessage = "Required phonenumber")]
+		public required string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Required password")]
+		public required string Password { get; set; }
+
+        [Required(ErrorMessage = "Error S")]
+		public required string Salt { get; set; }
     }
 }
