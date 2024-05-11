@@ -31,5 +31,23 @@ namespace ForgeEventApp.Repositories
 
             return ev?.Price ?? 0;
         }
+
+		public async Task CreateEventAsync(Event events)
+		{
+			Event newEvent = new()
+			{
+				Name = events.Name,
+				Address = events.Address,
+				Description = events.Description,
+				Category = events.Category,
+				Price = events.Price,
+				TicketAmount = events.TicketAmount,
+				Date = events.Date,
+				CreatedAt = events.CreatedAt,
+				ImageUrl = events.ImageUrl,
+			};
+            await _context.Events.AddAsync(newEvent);
+            await _context.SaveChangesAsync();
+        }
 	}
 }

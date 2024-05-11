@@ -1,5 +1,6 @@
 ﻿using ForgeEventApp.Interfaces;
 using ForgeEventApp.Models;
+using ForgeEventApp.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForgeEventApp.Controllers
@@ -26,5 +27,10 @@ namespace ForgeEventApp.Controllers
 			}
 			return Ok(events);
 		}
-	}
+
+        public async Task CreateEvent(Event events)
+        {
+            await _eventRepository.CreateEventAsync(events);
+        }
+    }
 }
