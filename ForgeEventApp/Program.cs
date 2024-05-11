@@ -1,9 +1,10 @@
-using ForgeEventApp.Components;
+﻿using ForgeEventApp.Components;
 using ForgeEventApp.Data;
 using ForgeEventApp.Interfaces;
 using ForgeEventApp.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddQuickGridEntityFrameworkAdapter();;
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();

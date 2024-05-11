@@ -44,7 +44,7 @@ namespace ForgeEventApp.Repositories
 				TicketAmount = events.TicketAmount,
 				Date = events.Date,
 				CreatedAt = DateTime.Now,
-				//ImageUrl = events.ImageUrl,
+				ImageUrl = events.ImageUrl,
 			};
             await _context.Events.AddAsync(newEvent);
             await _context.SaveChangesAsync();

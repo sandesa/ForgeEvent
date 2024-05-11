@@ -1,0 +1,60 @@
+﻿@* @page "/events/details"
+@inject ForgeEventApp.Data.AppDbContext DB
+@using ForgeEventApp.Models
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>Event</h4>
+    <hr />
+    @if (event is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Name</dt>
+            <dd class="col-sm-10">@event.Name</dd>
+            <dt class="col-sm-2">ImageUrl</dt>
+            <dd class="col-sm-10">@event.ImageUrl</dd>
+            <dt class="col-sm-2">TicketAmount</dt>
+            <dd class="col-sm-10">@event.TicketAmount</dd>
+            <dt class="col-sm-2">Address</dt>
+            <dd class="col-sm-10">@event.Address</dd>
+            <dt class="col-sm-2">Date</dt>
+            <dd class="col-sm-10">@event.Date</dd>
+            <dt class="col-sm-2">CreatedAt</dt>
+            <dd class="col-sm-10">@event.CreatedAt</dd>
+            <dt class="col-sm-2">Description</dt>
+            <dd class="col-sm-10">@event.Description</dd>
+            <dt class="col-sm-2">Price</dt>
+            <dd class="col-sm-10">@event.Price</dd>
+        </dl>
+        <div>
+            <a href="@($"/events/edit?id={event.Id}")">Edit</a> |
+            <a href="@($"/events")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    Event? event;
+
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        event = await DB.Events.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (event is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}
+ *@
