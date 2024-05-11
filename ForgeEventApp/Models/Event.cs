@@ -9,7 +9,7 @@ namespace ForgeEventApp.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage ="required eventname")]
-		public required string Name { get; set; }
+		public string Name { get; set; }
 
         public string? ImageUrl { get; set; }
 
@@ -17,7 +17,7 @@ namespace ForgeEventApp.Models
         public int TicketAmount { get; set; }
 
         [Required(ErrorMessage = "required address")]
-        public required string Address { get; set;}
+        public string Address { get; set;}
 
         [Required(ErrorMessage = "required event date time")]
         public DateTime Date { get; set; }
@@ -25,7 +25,7 @@ namespace ForgeEventApp.Models
         public DateTime CreatedAt { get; set; }
 
         [Required(ErrorMessage = "required description")]
-        public required string Description { get; set;}
+        public string Description { get; set;}
 
         [Required(ErrorMessage = "required ticket price")]
         public decimal Price { get; set; }

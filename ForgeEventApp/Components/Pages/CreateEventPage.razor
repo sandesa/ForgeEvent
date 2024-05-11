@@ -1,15 +1,17 @@
 ﻿@page "/createeventpage"
+@using ForgeEventApp.Models
+@using ForgeEventApp.Interfaces
 
 <h3>CreateEventPage</h3>
 
-<form class="row g-3">
+<form class="row g-3" @onsubmit="CreateEvent">
     <div class="col-md-6">
         <label for="inputEventName" class="form-label">Event name</label>
-        <input type="text" class="form-control" id="inputEventName">
+        <input type="text" @bind="events.Name" class="form-control" id="inputEventName">
     </div>
     <div class="col-12">
         <label for="inputAddress" class="form-label">Address</label>
-        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+        <input type="text" @bind="events.Address" class="form-control" id="inputAddress" placeholder="1234 Main St">
     </div>
     <div class="col-md-4">
         <label for="inputCategory" class="form-label">Category</label>
@@ -22,19 +24,19 @@
     </div>
     <div class="mb-3">
         <label for="inputDescription" class="form-label">Description</label>
-        <textarea class="form-control" id="inputDescription" rows="3"></textarea>
+        <textarea class="form-control" @bind="events.Description" id="inputDescription" rows="3"></textarea>
     </div>
     <div class="col-md-6">
         <label for="inputEventTicketAmount" class="form-label">Ticket Amount</label>
-        <input type="number" class="form-control" id="inputEventTicketAmount">
+        <input type="number" @bind="events.TicketAmount" class="form-control" id="inputEventTicketAmount">
     </div>
     <div class="col-md-6">
         <label for="inputEventTicketPirce" class="form-label">Ticket Price</label>
-        <input type="number" class="form-control" id="inputEventTicketPirce">
+        <input type="number" @bind="events.Price" class="form-control" id="inputEventTicketPirce">
     </div>
     <div class="col-md-6">
         <label for="inputEventDate" class="form-label">Ticket Price</label>
-        <input type="date" class="form-control" id="inputEventDate">
+        <input type="date" @bind="events.Date" class="form-control" id="inputEventDate">
     </div>
 
     <div class="col-12">
@@ -43,5 +45,14 @@
 </form>
 
 @code {
+    private Event events = new Event();
+
+    [Inject]
+    private IEventRepository EventRepository { get; set; }
+
+    private async Task CreateEvent()
+    {
+        await EventRepository.CreateEventAsync(events);
+    }
 
 }
