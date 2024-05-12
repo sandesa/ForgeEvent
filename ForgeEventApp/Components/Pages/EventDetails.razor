@@ -1,0 +1,44 @@
+﻿@page "/event-details/{eventId}"
+@inject IEventRepository Repository
+
+<PageTitle>Event Details</PageTitle>
+
+@if (Event is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="container">
+        <h1>@Event.Name</h1>
+        <img src="/images/EventImages/@Event.ImageUrl" class="img-fluid" alt="@Event.Name" />
+        <p>Address: @Event.Address</p>
+        <p>Date: @Event.Date.ToString("dddd, dd MMMM yyyy")</p>
+        <p>Description: @Event.Description</p>
+        <p>Price: @Event.Price</p>
+        <p>Category: @Event.Category</p>
+        <h2>Contact Information</h2>
+        @* <p>Admin Name: @Event.AdminName</p>
+        <p>Phone: @Event.Phone</p>
+        <p>Email: @Event.Email</p> *@
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string EventId { get; set; }
+
+    private Event Event;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (int.TryParse(EventId, out int id))
+        {
+            Event = await Repository.GetEventByIdAsync(id);
+        }
+        else
+        {
+            //Error page
+        }
+    }
+}

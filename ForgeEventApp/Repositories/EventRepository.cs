@@ -31,5 +31,9 @@ namespace ForgeEventApp.Repositories
 
             return ev?.Price ?? 0;
         }
+		public async Task<Event> GetEventByIdAsync(int eventId)
+		{
+			return await _context.Events.FirstOrDefaultAsync(e => e.Id == eventId);
+		}
 	}
 }
