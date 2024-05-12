@@ -55,3 +55,17 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+#nav-user {
+    padding-right: 1.5rem; 
+    padding-left: 2rem; 
+    color: goldenrod;
+}
+
+#nav-user:hover {
+    color:aqua;
+}
+
+#nav-dropdown:hover {
+    color: goldenrod;
+}
