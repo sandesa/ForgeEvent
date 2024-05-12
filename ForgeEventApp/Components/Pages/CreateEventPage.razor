@@ -1,5 +1,7 @@
 ﻿@page "/createeventpage"
 @inject ForgeEventApp.Interfaces.IEventRepository CREATE
+@inject ForgeEventApp.Interfaces.IValidations FORMSUCCESS
+@using ForgeEventApp.Functions
 @using ForgeEventApp.Models
 
 <PageTitle>Create</PageTitle>
@@ -49,6 +51,12 @@
                 <ValidationMessage For="() => Event.Price" class="text-danger" />
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
+            @if (showSuccessMessage)
+            {
+                <div class="alert alert-success" role="alert">
+                    Event has been created!
+                </div>
+            }
         </EditForm>
     </div>
 </div>
@@ -57,10 +65,18 @@
 
     [SupplyParameterFromForm]
     public Event Event { get; set; } = new();
+    private bool showSuccessMessage = false;
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task AddEvent()
     {
-        await CREATE.CreateEventAsync(Event);
+            await CREATE.CreateEventAsync(Event);
+            
+            await FORMSUCCESS.SubmitFormAsync(() =>
+            {
+                showSuccessMessage = true;
+                FORMSUCCESS.RestValidFormBool();
+            });
     }
+
 }

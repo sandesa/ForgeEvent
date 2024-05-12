@@ -30,5 +30,6 @@ namespace ForgeEventApp.Repositories
 			await _context.Users.AddAsync(newUser);
 			await _context.SaveChangesAsync();
 		}
-	}
+
+    }
 }

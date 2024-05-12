@@ -7,5 +7,5 @@ namespace ForgeEventApp.Interfaces
 	{
 		Task CreateUserAsync(User user);
 
-	}
+    }
 }
