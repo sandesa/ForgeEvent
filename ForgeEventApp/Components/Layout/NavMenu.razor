@@ -1,39 +1,7 @@
-﻿@* <div class="top-row ps-3 navbar navbar-dark">
+﻿<nav class="navbar bg-dark navbar-expand-lg " data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">ForgeEventApp</a>
-    </div>
-</div>
-
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div> *@
-
-<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse d-flex" id="navbarSupportedContent">
+            <a class="mx-5" href="#" style="text-decoration: none; color: goldenrod;">Forge<br />Event</a>
             <ul class="navbar-nav me-auto d-flex align-items-center">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Home</a>
@@ -42,27 +10,29 @@
                     <a class="nav-link" href="#">Link</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Disabled</a>
+                    <a class="nav-link" href="#">Link</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                <li class="nav-item dropdown" style="padding-bottom: 0.5rem">
+                    <Dropdown Size="Size.Small" id="nav-dropdown">
+                        <DropdownToggleButton Color="ButtonColor.None">Dropdown button</DropdownToggleButton>
+                        <DropdownMenu>
+                            <DropdownHeader>Header</DropdownHeader>
+                            <DropdownItem To="#" Type="ButtonType.Link">Action</DropdownItem>
+                            <DropdownItem To="#" Type="ButtonType.Link">Another action</DropdownItem>
+                            <DropdownItem To="#" Type="ButtonType.Link">Something else here</DropdownItem>
+                        </DropdownMenu>
+                       </Dropdown>
                 </li>
             </ul>
-            <a class="navbar-brand" href="#">Forge<br />Event</a>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+            <a class="nav-link" id="nav-user" href="#"><Icon Name="IconName.PersonCircle" Size="IconSize.x5"></Icon></a>
         </div>
     </div>
 </nav>
+
 
 
 

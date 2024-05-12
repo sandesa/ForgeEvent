@@ -1,13 +1,11 @@
 ﻿@page "/"
-@using ForgeEventApp.Interfaces
-@using ForgeEventApp.Models
 @inject IEventRepository Repository
 
 <PageTitle>Home</PageTitle>
 
 <h1>Forge<br />Event</h1>
 
-<div class="d-flex align-items-center flex-column">
+<div class="container d-flex flex-column">
 		@if (events is null)
 		{
 			<p>Loading...</p>
@@ -16,12 +14,16 @@
 		{
 			@foreach(var item in events) 
 			{
-				<div class="col-3 p-1">
-					<div class="card h-100">
-						<img src="/images/EventImages/@item.ImageUrl" class="img-fluid card-img-top" alt="@item.Name" />
-						<div class="card-body">
-							<h5 class="card-title">@item.Name</h5>
-							<p class="card-text">@item.Date.ToString("dddd, dd MMMM yyyy")</p>
+			<div class="d-flex justify-content-center">
+					<div class="col-3 p-1" style="width: 50%">
+						<div class="card h-100">
+							<a href="#" style="text-decoration: none; color: inherit;">
+								<img src="/images/EventImages/@item.ImageUrl" class="img-fluid card-img-top" alt="@item.Name" />
+								<div class="card-body">
+									<h5 class="card-title">@item.Name</h5>
+									<p class="card-text">@item.Date.ToString("dddd, dd MMMM yyyy")</p>
+								</div>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -34,7 +36,6 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		// var url = "https://localhost:7206/api/Events";
 		events = await Repository.GetAllEventsAsync();
 	}
 }
