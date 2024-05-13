@@ -25,7 +25,7 @@ namespace ForgeEventApp.Repositories
 				Email = user.Email,
 				PhoneNumber = user.PhoneNumber,
 				Password = user.Password,
-				Salt = user.Salt
+				Salt = "salt"
 			};
 			await _context.Users.AddAsync(newUser);
 			await _context.SaveChangesAsync();
