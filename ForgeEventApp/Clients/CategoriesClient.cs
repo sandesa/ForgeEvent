@@ -1,42 +1,52 @@
 ﻿using ForgeEventApp.Models;
 
-namespace ForgeEventApp.Clients
+namespace ForgeEventApp.Clients;
+
+public class CategoriesClient
 {
-    public class CategoriesClient
-    {
-        private readonly Category[] categories =
-            [
-                new()
-                {
-                    Id = 1,
-                    Name = "Test1"
-                },
-                new()
-                {
-                    Id = 2,
-                    Name = "Test2"
-                },
-                new()
-                {
-                    Id = 3,
-                    Name = "Test3"
-                },
-                new()
-                {
-                    Id = 4,
-                    Name = "Test4"
-                },
-                new()
-                {
-                    Id = 5,
-                    Name = "Test5"
-                },
-                new()
-                {
-                    Id = 6,
-                    Name = "Test6"
-                },
-            ];
-        public Category[] GetCategories => categories;
-    }
+//    private readonly Category[] categories =
+//        [
+//            new()
+//            {
+//                Id = 1,
+//                Name = "Music"
+//            },
+//            new()
+//            {
+//                Id = 2, 
+//                Name = "Technology"
+//            },
+//            new()
+//            {
+//                Id = 3, 
+//                Name = "Food & Drinks"
+//            },
+//            new()
+//            {
+//                Id = 4, 
+//                Name = "Sports"
+//            },
+//            new()
+//            {
+//                Id = 5,
+//                Name = "Art & Culture"
+//            },
+//            new()
+//            {
+//                Id = 6, 
+//                Name = "Fashion"
+//            },
+//            new()
+//            {
+//                Id = 7,
+//                Name = "Comedy"
+//            },
+//            new()
+//            {
+//                Id = 8,
+//                Name = "Film"
+//            },
+//        ];
+//    public Category[] GetCategories => categories;
+//}
 }
