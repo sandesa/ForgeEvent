@@ -7,7 +7,6 @@ namespace ForgeEventApp.Interfaces
         Task<IEnumerable<Event>> GetAllEventsAsync();
 		Task<int> GetTicketAmountAsync(int id);
 		Task<decimal> GetTicketPriceAsync(int id);
-        Task<Event> GetEventByIdAsync(int eventId);
-		
+        Task<Event> GetEventWithAdminDetailsAsync(int eventId);
     }
 }
