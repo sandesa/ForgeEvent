@@ -1,5 +1,7 @@
 ﻿@page "/createuserpage"
-@using ForgeEventApp.Interfaces
+@inject ForgeEventApp.Interfaces.IUserRepository CREATE
+@inject ForgeEventApp.Interfaces.IValidations FORMSUCCESS
+@using ForgeEventApp.Functions
 @using ForgeEventApp.Models
 @using System.Net.Http.Json
 @attribute [StreamRendering]
