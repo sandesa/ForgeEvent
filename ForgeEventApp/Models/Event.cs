@@ -31,5 +31,10 @@ namespace ForgeEventApp.Models
         [Range(1, 9999, ErrorMessage = "Ticket price must be at least 1")]
         public decimal Price { get; set; }
 
-    }
+		//[Required(ErrorMessage = "required event category")] 
+		public string? Category { get; set; }
+
+		//[Required(ErrorMessage = "euerror")]
+		public User? User { get; set; }
+	}
 }
