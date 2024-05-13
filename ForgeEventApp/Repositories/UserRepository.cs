@@ -37,5 +37,5 @@ namespace ForgeEventApp.Repositories
 
 			return user is null ? throw new InvalidOperationException("Cannot find user") : user;
 		}
-
+	}
 }
