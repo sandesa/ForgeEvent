@@ -1,0 +1,121 @@
+﻿@page "/Events/edit"
+@inject ForgeEventApp.Data.AppDbContext DB
+@using ForgeEventApp.Models
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h4>Event</h4>
+<hr />
+@if (Event is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="Event" OnValidSubmit="UpdateEvent" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="Event.Id" value="@Event.Id" />
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <InputText id="name" @bind-Value="Event.Name" class="form-control" />
+                    <ValidationMessage For="() => Event.Name" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="imageurl" class="form-label">ImageUrl:</label>
+                    <InputText id="imageurl" @bind-Value="Event.ImageUrl" class="form-control" />
+                    <ValidationMessage For="() => Event.ImageUrl" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="ticketamount" class="form-label">TicketAmount:</label>
+                    <InputNumber id="ticketamount" @bind-Value="Event.TicketAmount" class="form-control" />
+                    <ValidationMessage For="() => Event.TicketAmount" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address:</label>
+                    <InputText id="address" @bind-Value="Event.Address" class="form-control" />
+                    <ValidationMessage For="() => Event.Address" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date:</label>
+                    <InputDate id="date" @bind-Value="Event.Date" class="form-control" />
+                    <ValidationMessage For="() => Event.Date" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="createdat" class="form-label">CreatedAt:</label>
+                    <InputDate id="createdat" @bind-Value="Event.CreatedAt" class="form-control" />
+                    <ValidationMessage For="() => Event.CreatedAt" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <InputText id="description" @bind-Value="Event.Description" class="form-control" />
+                    <ValidationMessage For="() => Event.Description" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <InputNumber id="price" @bind-Value="Event.Price" class="form-control" />
+                    <ValidationMessage For="() => Event.Price" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/events">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    public Event? Event { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Event ??= await DB.Events.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (Event is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdateEvent()
+    {
+        DB.Attach(Event!).State = EntityState.Modified;
+
+        try
+        {
+            await DB.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!EventExists(Event!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/events");
+    }
+
+    bool EventExists(int id)
+    {
+        return DB.Events.Any(e => e.Id == id);
+    }
+}
