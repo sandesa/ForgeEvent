@@ -32,6 +32,7 @@ namespace ForgeEventApp.Repositories
             return ev?.Price ?? 0;
         }
 
+
 		public async Task CreateEventAsync(Event events)
 		{
 			Event newEvent = new()
@@ -49,5 +50,10 @@ namespace ForgeEventApp.Repositories
             await _context.Events.AddAsync(newEvent);
             await _context.SaveChangesAsync();
         }
-	}
+
+        public async Task<Event> GetEventWithAdminDetailsAsync(int eventId)
+        {
+            return await _context.Events.Include(e => e.User).FirstOrDefaultAsync(e => e.Id == eventId);
+        }
+}
 }
