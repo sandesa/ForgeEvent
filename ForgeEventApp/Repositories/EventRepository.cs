@@ -61,37 +61,6 @@ namespace ForgeEventApp.Repositories
             return _context.Events.Where(e => e.Category == category);
         }
 
-        //private static readonly Dictionary<Category, string> DisplayNames = new Dictionary<Category, string>
-        //{
-        //	{ Category.Music, "Music" },
-        //	{ Category.Technology, "Technology" },
-        //	{ Category.Food_And_Drinks, "Food & Drinks" },
-        //	{ Category.Sports, "Sports" },
-        //	{ Category.Art_And_Culture, " Art % Culture" },
-        //	{ Category.Fashion, "Fashion" },
-        //	{ Category.Comedy, "Comedy" },
-        //	{ Category.Film, "Film" }
-        //};
-
-        //      public Dictionary<Category, string> CategoryDisplayNames => DisplayNames;
-
-        //public async Task<Dictionary<Category, string>> GetCategoryAsync()
-        //{
-            
-           
-        //    return new Dictionary<Category, string>
-        //    {
-        //        { Category.Music, "Music" },
-        //        { Category.Technology, "Technology" },
-        //        { Category.Food_And_Drinks, "Food & Drinks" },
-        //        { Category.Sports, "Sports" },
-        //        { Category.Art_And_Culture, "Art & Culture" },
-        //        { Category.Fashion, "Fashion" },
-        //        { Category.Comedy, "Comedy" },
-        //        { Category.Film, "Film" }
-        //    };
-        //}
-
         public Task<Dictionary<Category, string>> GetCategoryAsync()
         {
             return Task.FromResult(new Dictionary<Category, string>

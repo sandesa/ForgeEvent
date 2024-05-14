@@ -1,7 +1,7 @@
 ﻿@page "/createeventpage"
+@inject HttpClient HttpClient
 @inject ForgeEventApp.Interfaces.IEventRepository CREATE
 @inject ForgeEventApp.Interfaces.IValidations FORMSUCCESS
-@inject HttpClient HttpClient
 @using ForgeEventApp.Functions
 @using ForgeEventApp.Models
 @using ForgeEventApp.Controllers
@@ -13,6 +13,8 @@
 <h1>Create</h1>
 
 <h4>Event</h4>
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -64,30 +66,32 @@
         </EditForm>
     </div>
 </div>
+@if (CategoriesDisplay == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <select>
+        @foreach (var category in CategoriesDisplay)
+        {
+            <option value="@category">@category</option>
+        }
+    </select>
+}
 
-<select @bind="SelectedCategory">
-    @foreach (var kvp in CategoryDisplayNames)
-    {
-        <option value="@kvp">@kvp</option>
-    }
-</select>
-
-<p>You selected: @SelectedCategory</p>
 
 @code {
-
-    private Category SelectedCategory { get; set; }
-    private IEnumerable<string>? CategoryDisplayNames;
+    private IEnumerable<string>? CategoriesDisplay;
 
     protected override async Task OnInitializedAsync()
     {
-        CategoryDisplayNames = await HttpClient.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7206/api/Events/categories");
+        CategoriesDisplay = await HttpClient.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7206/api/Events/categories");
     }
 
     [SupplyParameterFromForm]
     public Event Event { get; set; } = new();
     private bool showSuccessMessage = false;
-
 
     public async Task AddEvent()
     {
