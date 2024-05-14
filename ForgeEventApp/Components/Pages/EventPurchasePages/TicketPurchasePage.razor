@@ -9,12 +9,6 @@
 
     private async Task PurchaseTicket()
     {
-        bool ticketAmountValid = await _validations.ValidateTicketAmount(1);
-
-        if(!ticketAmountValid)
-        {
-            return;
-        }
 
         bool ticketAmountLeftValid = await _validations.ValidateTicketAmountLeft(1, 1);
 
