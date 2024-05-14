@@ -1,39 +1,68 @@
 ﻿using ForgeEventApp.Interfaces;
+using Microsoft.AspNetCore.Components.Forms;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 
-namespace ForgeEventApp.Functions
+namespace ForgeEventApp.Functions;
+
+public class Validations : IValidations
 {
-    public class Validations
+    private readonly IEventRepository _eventRepository;
+    private EditContext _editContext;
+
+    public Validations(IEventRepository eventRepository)
     {
-        private readonly IEventRepository _eventRepository;
+        _eventRepository = eventRepository;
+        
+    }
 
-        public Validations(IEventRepository eventRepository)
+    private bool formValid = false;
+    public bool isFormValid => formValid;
+
+    public async Task<bool> SubmitFormAsync(Action formSubmit)
+    {
+        formSubmit();
+
+        if(_editContext == null)
         {
-            _eventRepository = eventRepository;
+            formValid = true;
         }
-        public async Task<bool> ValidateTicketAmount(int ticketAmount)
+        else
         {
-            int amount = ticketAmount;
-
-            if (amount <= 0)
-            {
-                return false;
-            }
-
-            return true;
+            formValid = false;
         }
 
-        public async Task<bool> ValidateTicketAmountLeft(int ticketAmount, int id)
+        return await Task.FromResult(isFormValid);
+    }
+
+    public async Task RestValidFormBool()
+    {
+        formValid = false;
+    }
+
+    public async Task<bool> ValidateTicketAmount(int ticketAmount)
+    {
+        int amount = ticketAmount;
+
+        if (amount <= 0)
         {
-            int amount = ticketAmount;
-            int eventId = id;
-            int ticketAmountLeft = await _eventRepository.GetTicketAmountAsync(eventId);
-
-            if (ticketAmountLeft > amount)
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
+
+        return true;
+    }
+
+    public async Task<bool> ValidateTicketAmountLeft(int ticketAmount, int id)
+    {
+        int amount = ticketAmount;
+        int eventId = id;
+        int ticketAmountLeft = await _eventRepository.GetTicketAmountAsync(eventId);
+
+        if (ticketAmountLeft > amount)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

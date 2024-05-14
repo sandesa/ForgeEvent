@@ -30,11 +30,12 @@ namespace ForgeEventApp.Repositories
 			await _context.Users.AddAsync(newUser);
 			await _context.SaveChangesAsync();
 		}
-        public async Task<User> DisplayProfilePageAsync(int id)
-        {
-            return await _context.Users
-				.Where(x => x.Id ==id)
-				.FirstOrDefaultAsync();
-        }
-    }
+
+		public async Task<User> GetUserFromIdAsync(int id)
+		{
+			var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+
+			return user is null ? throw new InvalidOperationException("Cannot find user") : user;
+		}
+	}
 }
