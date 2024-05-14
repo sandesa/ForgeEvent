@@ -45,7 +45,7 @@ namespace ForgeEventApp.Controllers
 			return Ok(eventDetatils);
 		}
 
-		[HttpPost]
+		[HttpPost("{events}")]
         public async Task CreateEvent(Event events)
         {
             await _eventRepository.CreateEventAsync(events);
