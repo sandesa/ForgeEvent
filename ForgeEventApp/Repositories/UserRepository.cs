@@ -30,5 +30,11 @@ namespace ForgeEventApp.Repositories
 			await _context.Users.AddAsync(newUser);
 			await _context.SaveChangesAsync();
 		}
-	}
+        public async Task<User> DisplayProfilePageAsync(int id)
+        {
+            return await _context.Users
+				.Where(x => x.Id ==id)
+				.FirstOrDefaultAsync();
+        }
+    }
 }

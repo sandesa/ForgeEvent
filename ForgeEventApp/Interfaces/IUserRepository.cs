@@ -6,6 +6,8 @@ namespace ForgeEventApp.Interfaces
 	public interface IUserRepository
 	{
 		Task CreateUserAsync(User user);
+		Task<User> DisplayProfilePageAsync(int id);
 
-	}
+
+    }
 }
