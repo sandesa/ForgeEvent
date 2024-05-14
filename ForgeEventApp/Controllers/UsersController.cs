@@ -27,7 +27,7 @@ namespace ForgeEventApp.Controllers
         [HttpGet("{id}")]
         public async Task<User> GetUserById(int id)
         {
-            var userDetails = await _userRepository.DisplayProfilePageAsync(id); 
+            var userDetails = await _userRepository.GetUserFromIdAsync(id); 
 
             if (userDetails == null)
             {
@@ -35,6 +35,7 @@ namespace ForgeEventApp.Controllers
             }
             return userDetails; 
         }
+        
 
 
     }
