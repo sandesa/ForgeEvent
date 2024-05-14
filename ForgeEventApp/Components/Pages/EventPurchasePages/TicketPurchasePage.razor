@@ -1,11 +1,65 @@
-﻿@page "/ticketpurchasepage"
+﻿@page "/ticketpurchasepage/{eventId}"
 @using ForgeEventApp.Functions
 @attribute [StreamRendering]
+@inject IEventRepository EventRepository
 
-<h3>TicketPurchasePage</h3>
+<PageTitle>TicketPurchasePage</PageTitle>
+    
+@if (Event != null)
+{
+    <div>
+        <h4>Event Details</h4>
+        <p><strong>Name:</strong> @Event.Name</p>
+        <p><strong>Date:</strong> @Event.Date.ToString("dddd, dd MMMM yyyy")</p>
+        <p><strong>Description:</strong> @Event.Description</p>
+        <p><strong>Price:</strong> @Event.Price $</p>
+        <p><strong>Total Price:</strong> @(_ticketAmount * Event.Price) $</p>
+    </div>
+
+    
+
+    <div class="form-group">
+        <label for="ticketAmount">Ticket Amount:</label>
+        <input type="number" id="ticketAmount" class="form-control" @bind="_ticketAmount" min="1" style="width: 5%; margin: 0 auto;"/>
+    </div>
+
+
+    <button type="button" class="btn btn-primary" @onclick="PurchaseTicket">Purchase Tickets</button>
+
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <div class="alert alert-danger mt-3" role="alert">
+            @_errorMessage
+        </div>
+    }
+}
+else
+{
+    <p>No event selected.</p>
+}
 
 @code {
     private Validations _validations;
+    
+    [Parameter]
+    public string EventId { get; set; }
+
+    private Event Event;
+    private int _ticketAmount;
+    private string _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (int.TryParse(EventId, out int id))
+        {
+            Event = await EventRepository.GetEventWithAdminDetailsAsync(id);
+        }
+        else
+        {
+            // Error handling: Redirect to error page or display error message
+        }
+    }
+
 
     private async Task PurchaseTicket()
     {
