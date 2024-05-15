@@ -1,54 +1,54 @@
 ﻿@page "/createeventpage"
-@inject ForgeEventApp.Interfaces.IEventRepository CREATE
+@inject HttpClient HttpClient
 @inject ForgeEventApp.Interfaces.IValidations FORMSUCCESS
-@using ForgeEventApp.Functions
-@using ForgeEventApp.Models
 
 <PageTitle>Create</PageTitle>
 
 <h1>Create</h1>
 
 <h4>Event</h4>
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <EditForm method="post" Model="Event" OnValidSubmit="AddEvent" FormName="create" Enhance>
+        <EditForm method="post" Model="newEvent" OnValidSubmit="AddEvent" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
                 <label for="name" class="form-label">Name:</label>
-                <InputText id="name" @bind-Value="Event.Name" class="form-control" />
-                <ValidationMessage For="() => Event.Name" class="text-danger" />
+                <InputText id="name" @bind-Value="newEvent.Name" class="form-control" />
+                <ValidationMessage For="() => newEvent.Name" class="text-danger" />
             </div>
             <div class="mb-3">
                 <label for="imageurl" class="form-label">ImageUrl:</label>
-                <InputText id="imageurl" @bind-Value="Event.ImageUrl" class="form-control" />
-                <ValidationMessage For="() => Event.ImageUrl" class="text-danger" />
+                <InputText id="imageurl" @bind-Value="newEvent.ImageUrl" class="form-control" />
+                <ValidationMessage For="() => newEvent.ImageUrl" class="text-danger" />
             </div>
             <div class="mb-3">
                 <label for="ticketamount" class="form-label">TicketAmount:</label>
-                <InputNumber id="ticketamount" @bind-Value="Event.TicketAmount" class="form-control" />
-                <ValidationMessage For="() => Event.TicketAmount" class="text-danger" />
+                <InputNumber id="ticketamount" @bind-Value="newEvent.TicketAmount" class="form-control" />
+                <ValidationMessage For="() => newEvent.TicketAmount" class="text-danger" />
             </div>
             <div class="mb-3">
                 <label for="address" class="form-label">Address:</label>
-                <InputText id="address" @bind-Value="Event.Address" class="form-control" />
-                <ValidationMessage For="() => Event.Address" class="text-danger" />
+                <InputText id="address" @bind-Value="newEvent.Address" class="form-control" />
+                <ValidationMessage For="() => newEvent.Address" class="text-danger" />
             </div>
             <div class="mb-3">
                 <label for="date" class="form-label">Date:</label>
-                <InputDate id="date" @bind-Value="Event.Date" class="form-control" />
-                <ValidationMessage For="() => Event.Date" class="text-danger" />
+                <InputDate id="date" @bind-Value="newEvent.Date" class="form-control" />
+                <ValidationMessage For="() => newEvent.Date" class="text-danger" />
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description:</label>
-                <InputText id="description" @bind-Value="Event.Description" class="form-control" />
-                <ValidationMessage For="() => Event.Description" class="text-danger" />
+                <InputText id="description" @bind-Value="newEvent.Description" class="form-control" />
+                <ValidationMessage For="() => newEvent.Description" class="text-danger" />
             </div>
             <div class="mb-3">
                 <label for="price" class="form-label">Price:</label>
-                <InputNumber id="price" @bind-Value="Event.Price" class="form-control" />
-                <ValidationMessage For="() => Event.Price" class="text-danger" />
+                <InputNumber id="price" @bind-Value="newEvent.Price" class="form-control" />
+                <ValidationMessage For="() => newEvent.Price" class="text-danger" />
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
             @if (showSuccessMessage)
@@ -60,23 +60,43 @@
         </EditForm>
     </div>
 </div>
+@if (CategoriesDisplay == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <select>
+        @foreach (var category in CategoriesDisplay)
+        {
+            <option value="@category">@category</option>
+        }
+    </select>
+}
+
 
 @code {
+    private IEnumerable<string>? CategoriesDisplay;
 
+    protected override async Task OnInitializedAsync()
+    {
+        CategoriesDisplay = await HttpClient.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7206/api/Events/categories");
+    }
+    
     [SupplyParameterFromForm]
-    public Event Event { get; set; } = new();
+    public Event newEvent { get; set; } = new();
+
     private bool showSuccessMessage = false;
 
-    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task AddEvent()
     {
-            await CREATE.CreateEventAsync(Event);
-            
+        await HttpClient.PostAsJsonAsync($"https://localhost:7206/api/Events/{newEvent}", newEvent);
+        
             await FORMSUCCESS.SubmitFormAsync(() =>
             {
                 showSuccessMessage = true;
+                newEvent = new Event();
                 FORMSUCCESS.RestValidFormBool();
             });
     }
-
 }

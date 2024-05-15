@@ -5,6 +5,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ForgeEventApp.Models
 {
+    public enum Category
+    {
+        Music,
+        Technology,
+        Food_And_Drinks,
+        Sports,
+        Art_And_Culture,
+        Fashion,
+        Comedy,
+        Film
+    }
     public class Event
     {
         public int Id { get; set; }
@@ -32,9 +43,10 @@ namespace ForgeEventApp.Models
         public decimal Price { get; set; }
 
 		//[Required(ErrorMessage = "required event category")] 
-		public string? Category { get; set; }
+		public Category? Category { get; set; }
 
 		//[Required(ErrorMessage = "euerror")]
 		public User? User { get; set; }
-	}
+
+    }
 }
