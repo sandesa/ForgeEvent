@@ -2,6 +2,7 @@
 using ForgeEventApp.Interfaces;
 using ForgeEventApp.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace ForgeEventApp.Repositories
 {
@@ -31,5 +32,64 @@ namespace ForgeEventApp.Repositories
 
             return ev?.Price ?? 0;
         }
-	}
+
+		public async Task CreateEventAsync(Event events)
+		{
+			Event newEvent = new()
+			{
+				Name = events.Name,
+				Address = events.Address,
+				Description = events.Description,
+				//Category = events.Category,
+				Price = events.Price,
+				TicketAmount = events.TicketAmount,
+				Date = events.Date,
+				CreatedAt = DateTime.Now,
+				ImageUrl = events.ImageUrl,
+			};
+            await _context.Events.AddAsync(newEvent);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Event> GetEventWithAdminDetailsAsync(int eventId)
+        {
+            return await _context.Events.Include(e => e.User).FirstOrDefaultAsync(e => e.Id == eventId);
+        }
+
+		public async Task<IEnumerable<Event>> GetEventByCategoryAsync(Category category)
+		{
+            return _context.Events.Where(e => e.Category == category);
+        }
+
+        public Task<Dictionary<Category, string>> GetCategoryAsync()
+        {
+            return Task.FromResult(new Dictionary<Category, string>
+            {
+                { Category.Music, "Music" },
+                { Category.Technology, "Technology" },
+                { Category.Food_And_Drinks, "Food & Drinks" },
+                { Category.Sports, "Sports" },
+                { Category.Art_And_Culture, "Art & Culture" },
+                { Category.Fashion, "Fashion" },
+                { Category.Comedy, "Comedy" },
+                { Category.Film, "Film" }
+            });
+        }
+        private string GetDisplayName(Category category)
+        {
+            return category switch
+            {
+                Category.Music => "Music",
+                Category.Technology => "Technology",
+                Category.Food_And_Drinks => "Food & Drinks",
+                Category.Sports => "Sports",
+                Category.Art_And_Culture => "Art & Culture",
+                Category.Fashion => "Fashion",
+                Category.Comedy => "Comedy",
+                Category.Film => "Film",
+                _ => "Unknown"
+            };
+        }
+
+    }
 }

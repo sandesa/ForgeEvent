@@ -69,3 +69,19 @@ h1:focus {
 #nav-dropdown:hover {
     color: goldenrod;
 }
+
+.btn:active {
+    box-shadow: none;
+}
+
+.btn:focus {
+    box-shadow: none;
+}
+
+.btn.show {
+    color: goldenrod;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
