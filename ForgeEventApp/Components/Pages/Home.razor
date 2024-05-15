@@ -1,5 +1,5 @@
 ﻿@page "/"
-@inject IEventRepository Repository
+@inject HttpClient HttpClient
 
 <PageTitle>Home</PageTitle>
 
@@ -36,6 +36,6 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		events = await Repository.GetAllEventsAsync();
+		events = await HttpClient.GetFromJsonAsync<IEnumerable<Event>>("https://localhost:7206/api/Events/allevents");
 	}
 }

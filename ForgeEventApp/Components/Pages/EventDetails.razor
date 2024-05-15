@@ -1,6 +1,6 @@
 ﻿@page "/event-details/{eventId}"
-@inject IEventRepository EventRepository
 @inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
 
 <PageTitle>Event Details</PageTitle>
 
@@ -38,7 +38,7 @@ else
     {
         if (int.TryParse(EventId, out int id))
         {
-            Event = await EventRepository.GetEventWithAdminDetailsAsync(id);
+            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{id}");
         }
         else
         {
