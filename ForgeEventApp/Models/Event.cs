@@ -21,7 +21,7 @@ namespace ForgeEventApp.Models
         public string Address { get; set;}
 
         [ValidateSetDates(ErrorMessage = "The date must be at least 30 days ahead of today's date.")]
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
 
         public DateTime CreatedAt { get; set; }
 
