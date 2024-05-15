@@ -25,7 +25,7 @@ namespace ForgeEventApp.Controllers
 		}
 
         [HttpGet("{id}")]
-        public async Task<User> GetUserById(int id)
+        public async Task<ActionResult<User>> GetUserById(int id)
         {
             var userDetails = await _userRepository.GetUserFromIdAsync(id); 
 
@@ -33,7 +33,7 @@ namespace ForgeEventApp.Controllers
             {
                
             }
-            return userDetails; 
+            return Ok(userDetails); 
         }
         
 

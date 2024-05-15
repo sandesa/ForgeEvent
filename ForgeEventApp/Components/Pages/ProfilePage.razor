@@ -26,7 +26,7 @@ else
     {
         if (int.TryParse(Id, out int userId))
         {    
-          profile = await httpClient.GetFromJsonAsync<User>($"https://localhost:7206/api/User/{userId}");
+          profile = await httpClient.GetFromJsonAsync<User>($"https://localhost:7206/api/Users/{userId}");
                        
         }
 
