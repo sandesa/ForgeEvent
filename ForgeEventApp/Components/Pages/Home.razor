@@ -38,4 +38,20 @@
 	{
 		events = await HttpClient.GetFromJsonAsync<IEnumerable<Event>>("https://localhost:7206/api/Events/allevents");
 	}
+
+	private string GetCategoryDisplayName(Category category)
+	{
+		return category switch
+	{	
+			Category.Music => "Music",
+			Category.Technology => "Technology",
+			Category.FoodAndDrinks => "Food & Drinks",
+			Category.Sports => "Sports",
+			Category.ArtAndCulture => "Art & Culture",
+			Category.Fashion => "Fashion",
+			Category.Comedy => "Comedy",
+			Category.Film => "Film",
+			_ => "Unknown"
+	};
+	}
 }

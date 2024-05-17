@@ -7,14 +7,14 @@ namespace ForgeEventApp.Models
 {
     public enum Category
     {
-        Music,
-        Technology,
-        Food_And_Drinks,
-        Sports,
-        Art_And_Culture,
-        Fashion,
-        Comedy,
-        Film
+        Music = 0,
+        Technology = 1,
+        FoodAndDrinks = 2,  
+        Sports = 3,
+        ArtAndCulture = 4,  
+        Fashion = 5,
+        Comedy = 6,
+        Film = 7,
     }
     public class Event
     {
@@ -42,8 +42,8 @@ namespace ForgeEventApp.Models
         [Range(1, 9999, ErrorMessage = "Ticket price must be at least 1")]
         public decimal Price { get; set; }
 
-		//[Required(ErrorMessage = "required event category")] 
-		public Category? Category { get; set; }
+		[Required(ErrorMessage = "required event category")] 
+		public Category Category { get; set; }
 
 		//[Required(ErrorMessage = "euerror")]
 		public User? User { get; set; }

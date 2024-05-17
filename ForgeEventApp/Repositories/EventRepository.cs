@@ -1,6 +1,7 @@
 ﻿using ForgeEventApp.Data;
 using ForgeEventApp.Interfaces;
 using ForgeEventApp.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 
@@ -63,17 +64,19 @@ namespace ForgeEventApp.Repositories
 
         public Task<Dictionary<Category, string>> GetCategoryAsync()
         {
+                      
             return Task.FromResult(new Dictionary<Category, string>
             {
-                { Category.Music, "Music" },
-                { Category.Technology, "Technology" },
-                { Category.Food_And_Drinks, "Food & Drinks" },
-                { Category.Sports, "Sports" },
-                { Category.Art_And_Culture, "Art & Culture" },
-                { Category.Fashion, "Fashion" },
-                { Category.Comedy, "Comedy" },
-                { Category.Film, "Film" }
+                { (Category)0, "Music" },
+                { (Category)1, "Technology" },
+                { (Category)2, "Food & Drinks" },
+                { (Category)3, "Sports" },
+                { (Category)4, "Art & Culture" },
+                { (Category)5, "Fashion" },
+                { (Category)6, "Comedy" },
+                { (Category)7, "Film" }
             });
+
         }
         private string GetDisplayName(Category category)
         {
@@ -81,15 +84,16 @@ namespace ForgeEventApp.Repositories
             {
                 Category.Music => "Music",
                 Category.Technology => "Technology",
-                Category.Food_And_Drinks => "Food & Drinks",
+                Category.FoodAndDrinks => "Food & Drinks",  
                 Category.Sports => "Sports",
-                Category.Art_And_Culture => "Art & Culture",
+                Category.ArtAndCulture => "Art & Culture",  
                 Category.Fashion => "Fashion",
                 Category.Comedy => "Comedy",
                 Category.Film => "Film",
                 _ => "Unknown"
             };
         }
+
 
     }
 }
