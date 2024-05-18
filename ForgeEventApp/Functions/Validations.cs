@@ -40,18 +40,6 @@ public class Validations : IValidations
         formValid = false;
     }
 
-    public async Task<bool> ValidateTicketAmount(int ticketAmount)
-    {
-        int amount = ticketAmount;
-
-        if (amount <= 0)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     public async Task<bool> ValidateTicketAmountLeft(int ticketAmount, int id)
     {
         int amount = ticketAmount;
