@@ -22,11 +22,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IValidations, Validations>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

@@ -1,6 +1,34 @@
-﻿@page "/profilepage "
+﻿@page "/profilepage/{id}"
+@inject HttpClient httpClient
 <h3>ProfilePage</h3>
-
+@if(profile == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <dl class="row">
+        <dt class="col-sm-2">Name</dt>
+        <dd class="col-sm-10">@profile.FirstName @profile.LastName</dd>
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@profile.Email</dd>
+        <dt class="col-sm-2">Phonenumber</dt>
+        <dd class="col-sm-10">@profile.PhoneNumber</dd>
+    </dl>    
+}
+ 
 @code {
+    private User profile;
+    [Parameter]
+    public string Id { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        if (int.TryParse(Id, out int userId))
+        {    
+          profile = await httpClient.GetFromJsonAsync<User>($"https://localhost:7206/api/Users/{userId}");
+                       
+        }
+
+    }
 }
