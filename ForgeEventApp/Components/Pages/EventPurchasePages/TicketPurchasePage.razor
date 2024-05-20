@@ -1,28 +1,75 @@
-﻿@page "/ticketpurchasepage"
-@using ForgeEventApp.Functions
+﻿@page "/ticketpurchasepage/{EventId:int}"
+@using ForgeEventApp.Interfaces
 @attribute [StreamRendering]
+@inject ITicketService TicketService
+@inject IEventRepository EventRepository
+@inject IValidations Validations
+@rendermode InteractiveServer
 
-<h3>TicketPurchasePage</h3>
+<PageTitle>TicketPurchasePage</PageTitle>
 
-@code {
-    private Validations _validations;
+@if (Event != null)
+{
+    <div>
+        <h4>Event Details</h4>
+        <p><strong>Name:</strong> @Event.Name</p>
+        <p><strong>Date:</strong> @Event.Date.ToString("dddd, dd MMMM yyyy")</p>
+        <p><strong>Description:</strong> @Event.Description</p>
+        <p><strong>Price:</strong> @Event.Price $</p>
+        <p><strong>Total Price:</strong> @(_ticketAmount * Event.Price) $</p>
+    </div>
 
-    private async Task PurchaseTicket()
+    <div class="form-group">
+        <label for="ticketAmount">Ticket Amount:</label>
+        <input type="number" id="ticketAmount" class="form-control" @bind="_ticketAmount" min="1" style="width: 5%; margin: 0 auto;" />
+    </div>
+
+    <button type="button" class="btn btn-primary" @onclick="PurchaseTicket">Purchase Tickets</button>
+
+    @if (!string.IsNullOrEmpty(_errorMessage))
     {
 
-        bool ticketAmountLeftValid = await _validations.ValidateTicketAmountLeft(1, 1);
+        <div class="alert alert-danger mt-3" role="alert">
+            @_errorMessage
+        </div>
+    }
+}
+else
+{
+    <p>No event selected.</p>
+}
 
-        if(!ticketAmountLeftValid)
+@code {
+    [Parameter]
+    public int EventId { get; set; }
+
+    private Event Event;
+    private int _ticketAmount;
+    private string _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Event = await EventRepository.GetEventWithAdminDetailsAsync(EventId);
+        if (Event == null)
         {
-            return;
-        }
-
-        bool userConfirm = false;
-
-        if(!userConfirm)
-        {
-            return;
+            _errorMessage = "Event not found.";
         }
     }
 
+    private async Task PurchaseTicket()
+    {
+        _errorMessage = string.Empty;
+
+        if (!await Validations.ValidateTicketAmount(_ticketAmount))
+        {
+            _errorMessage = "Invalid ticket amount.";
+            return;
+        }
+
+        var (success, errorMessage) = await TicketService.PurchaseTicketAsync(Event, _ticketAmount, userId: 1);  // Mock user ID
+        if (!success)
+        {
+            _errorMessage = errorMessage;
+        }
+    }
 }
