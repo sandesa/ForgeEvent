@@ -1,0 +1,34 @@
+﻿@page "/ticketpurchaseconfirmation/{EventId:int}/{TicketAmount:int}"
+@inject IEventRepository EventRepository
+
+<PageTitle>Ticket Purchase Confirmation</PageTitle>
+
+@if (Event != null)
+{
+    <div>
+        <h3>Purchase Confirmation</h3>
+        <p><strong>Event Name:</strong> @Event.Name</p>
+        <p><strong>Date:</strong> @Event.Date.ToString("dddd, dd MMMM yyyy")</p>
+        <p><strong>Ticket Amount:</strong> @TicketAmount</p>
+        <p><strong>Total Price:</strong> @(TicketAmount * Event.Price) $</p>
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [Parameter]
+    public int EventId { get; set; }
+
+    [Parameter]
+    public int TicketAmount { get; set; }
+
+    private Event Event;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Event = await EventRepository.GetEventWithAdminDetailsAsync(EventId);
+    }
+}

@@ -6,30 +6,30 @@ using System.Collections;
 
 namespace ForgeEventApp.Repositories
 {
-	public class EventRepository : IEventRepository
-	{
-		private readonly AppDbContext _context;
+    public class EventRepository : IEventRepository
+    {
+        private readonly AppDbContext _context;
 
-		public EventRepository(AppDbContext context)
-		{
-			_context = context;
-		}
-		public async Task<IEnumerable<Event>> GetAllEventsAsync()
-		{
-			return await _context.Events.Select(e => e).ToListAsync();
-		}
+        public EventRepository(AppDbContext context)
+        {
+            _context = context;
+        }
 
-		public async Task<int> GetTicketAmountAsync(int id)
-		{
-			Event ev = await _context.Events.FindAsync(id);
+        public async Task<IEnumerable<Event>> GetAllEventsAsync()
+        {
+            return await _context.Events.Select(e => e).ToListAsync();
+        }
 
-			return ev?.TicketAmount ?? 0;
-		}
 
-		public async Task<decimal> GetTicketPriceAsync(int id)
-		{
+        public async Task<int> GetTicketAmountAsync(int id)
+        {
             Event ev = await _context.Events.FindAsync(id);
+            return ev?.TicketAmount ?? 0;
+        }
 
+        public async Task<decimal> GetTicketPriceAsync(int id)
+        {
+            Event ev = await _context.Events.FindAsync(id);
             return ev?.Price ?? 0;
         }
 
@@ -55,6 +55,17 @@ namespace ForgeEventApp.Repositories
         {
             return await _context.Events.Include(e => e.User).FirstOrDefaultAsync(e => e.Id == eventId);
         }
+
+
+        public async Task UpdateTicketAmountAsync(int eventId, int newTicketAmount)
+        {
+            var ev = await _context.Events.FindAsync(eventId);
+            if (ev != null)
+            {
+                ev.TicketAmount = newTicketAmount;
+                await _context.SaveChangesAsync();
+            }
+        }   
 
 		public async Task<IEnumerable<Event>> GetEventByCategoryAsync(Category category)
 		{
@@ -90,6 +101,7 @@ namespace ForgeEventApp.Repositories
                 _ => "Unknown"
             };
         }
+
 
     }
 }
