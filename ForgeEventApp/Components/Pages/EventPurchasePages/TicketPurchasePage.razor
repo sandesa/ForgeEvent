@@ -1,10 +1,13 @@
-﻿@page "/ticketpurchasepage/{eventId}"
-@using ForgeEventApp.Functions
+﻿@page "/ticketpurchasepage/{EventId:int}"
+@using ForgeEventApp.Interfaces
 @attribute [StreamRendering]
+@inject ITicketService TicketService
 @inject IEventRepository EventRepository
+@inject IValidations Validations
+@rendermode InteractiveServer
 
 <PageTitle>TicketPurchasePage</PageTitle>
-    
+
 @if (Event != null)
 {
     <div>
@@ -16,13 +19,10 @@
         <p><strong>Total Price:</strong> @(_ticketAmount * Event.Price) $</p>
     </div>
 
-    
-
     <div class="form-group">
         <label for="ticketAmount">Ticket Amount:</label>
-        <input type="number" id="ticketAmount" class="form-control" @bind="_ticketAmount" min="1" style="width: 5%; margin: 0 auto;"/>
+        <input type="number" id="ticketAmount" class="form-control" @bind="_ticketAmount" min="1" style="width: 5%; margin: 0 auto;" />
     </div>
-
 
     <button type="button" class="btn btn-primary" @onclick="PurchaseTicket">Purchase Tickets</button>
 
@@ -39,10 +39,8 @@ else
 }
 
 @code {
-    private Validations _validations;
-    
     [Parameter]
-    public string EventId { get; set; }
+    public int EventId { get; set; }
 
     private Event Event;
     private int _ticketAmount;
@@ -50,39 +48,27 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if (int.TryParse(EventId, out int id))
+        Event = await EventRepository.GetEventWithAdminDetailsAsync(EventId);
+        if (Event == null)
         {
-            Event = await EventRepository.GetEventWithAdminDetailsAsync(id);
-        }
-        else
-        {
-            // Error handling: Redirect to error page or display error message
+            _errorMessage = "Event not found.";
         }
     }
-
 
     private async Task PurchaseTicket()
     {
-        bool ticketAmountValid = await _validations.ValidateTicketAmount(1);
+        _errorMessage = string.Empty;
 
-        if(!ticketAmountValid)
+        if (!await Validations.ValidateTicketAmount(_ticketAmount))
         {
+            _errorMessage = "Invalid ticket amount.";
             return;
         }
 
-        bool ticketAmountLeftValid = await _validations.ValidateTicketAmountLeft(1, 1);
-
-        if(!ticketAmountLeftValid)
+        var (success, errorMessage) = await TicketService.PurchaseTicketAsync(Event, _ticketAmount, userId: 1);  // Mock user ID
+        if (!success)
         {
-            return;
-        }
-
-        bool userConfirm = false;
-
-        if(!userConfirm)
-        {
-            return;
+            _errorMessage = errorMessage;
         }
     }
-
 }
