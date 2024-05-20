@@ -1,6 +1,7 @@
 ﻿@page "/ticketpurchaseconfirmation/{EventId:int}/{TicketAmount:int}"
 @inject IEventRepository EventRepository
 
+
 <PageTitle>Ticket Purchase Confirmation</PageTitle>
 
 @if (Event != null)
@@ -11,6 +12,7 @@
         <p><strong>Date:</strong> @Event.Date.ToString("dddd, dd MMMM yyyy")</p>
         <p><strong>Ticket Amount:</strong> @TicketAmount</p>
         <p><strong>Total Price:</strong> @(TicketAmount * Event.Price) $</p>
+        <a href="/" class="btn btn-primary">Return to Home</a>
     </div>
 }
 else
