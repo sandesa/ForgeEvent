@@ -4,7 +4,7 @@ namespace ForgeEventApp.Models
 {
     public enum Role
     {
-        User,
+        User = 1,
         Admin,
     }
 

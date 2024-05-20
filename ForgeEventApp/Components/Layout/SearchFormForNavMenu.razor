@@ -1,0 +1,37 @@
+﻿@inject HttpClient HttpClient
+
+<Dropdown Size="Size.Small" id="nav-dropdown">
+    <DropdownToggleButton Color="ButtonColor.None">Categories</DropdownToggleButton>
+    <DropdownMenu>
+        <DropdownHeader>Categories</DropdownHeader>
+        @if (CategoriesDisplay != null)
+        {
+            foreach (var category in CategoriesDisplay)
+            {
+                <DropdownItem @onclick="() => CategorySelect(category)">
+                    @category
+                </DropdownItem>
+            }
+        }
+        else
+        {
+            <DropdownItem disabled>Loading categories...</DropdownItem>
+        }
+    </DropdownMenu>
+</Dropdown>
+<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+
+
+@code {
+    private IEnumerable<string>? CategoriesDisplay;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CategoriesDisplay = await HttpClient.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7206/api/Events/categories");
+    }
+
+    private void CategorySelect(string category)
+    {
+
+    }
+}

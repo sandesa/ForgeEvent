@@ -1,0 +1,45 @@
+﻿@page "/search"
+@inject HttpClient HttpClient
+
+<h3>SearchEventPage</h3>
+
+<form class="d-flex" role="search">
+    <Dropdown Size="Size.Small" id="nav-dropdown">
+        <DropdownToggleButton Color="ButtonColor.None">Categories</DropdownToggleButton>
+        <DropdownMenu>
+            <DropdownHeader>Categories</DropdownHeader>
+            @if (CategoriesDisplay != null)
+            {
+                foreach (var (category, name) in CategoriesDisplay)
+                {
+                    <DropdownItem @onclick="() => CategorySelect(category)">
+                        @name
+                    </DropdownItem>
+                }
+            }
+            else
+            {
+                <DropdownItem disabled>Loading categories...</DropdownItem>
+            }
+        </DropdownMenu>
+    </Dropdown>
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+
+@code {
+    private IEnumerable<(Category,string)>? CategoriesDisplay;
+    private IEnumerable<Event>? Events;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        CategoriesDisplay = await HttpClient.GetFromJsonAsync<IEnumerable<(Category, string)>>("https://localhost:7206/api/Events/categories");
+        Events = await HttpClient.GetFromJsonAsync<IEnumerable<Event>>("https://localhost:7206/api/Events/search");
+        
+    }
+
+    private void CategorySelect(Category category)
+    {
+        
+    }
+}

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Diagnostics;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace ForgeEventApp.Models
 {
     public enum Category
