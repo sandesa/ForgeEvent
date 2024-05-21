@@ -2,6 +2,7 @@
 using ForgeEventApp.Interfaces;
 using ForgeEventApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections;
 
 namespace ForgeEventApp.Repositories
@@ -18,6 +19,11 @@ namespace ForgeEventApp.Repositories
         public async Task<IEnumerable<Event>> GetAllEventsAsync()
         {
             return await _context.Events.Select(e => e).ToListAsync();
+        }
+        public async Task<IEnumerable<Event>> GetAllEventsPostedByUserAsync(int userId)
+        {
+            var events = await _context.Events.Where(e => e.User.Id == userId).ToListAsync();
+            return events is null ? throw new InvalidOperationException($"Cannot find any posted events from user with ID {userId}") : events;
         }
 
 

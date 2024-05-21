@@ -21,7 +21,7 @@ namespace ForgeEventApp.Repositories
 
         public async Task<IEnumerable<Rating>> GetAllRatingsForEventAsync(int eventId)
 		{
-			var ratings = await _context.Ratings.Where(r => r.Event.Id == eventId).ToListAsync();
+			var ratings = await _context.Ratings.Where(r => r.Event.Id == eventId).Include(r => r.User).ToListAsync();
 
 			return ratings is null ? throw new InvalidOperationException($"Cannot find ratings for event with ID {eventId}") : ratings;
 		}

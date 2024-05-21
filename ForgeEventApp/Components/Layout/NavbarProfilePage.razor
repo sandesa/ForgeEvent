@@ -1,0 +1,20 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/profilepage/@UserId">Personal Info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/profilepage/@UserId/bookings">My Bookings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/profilepage/@UserId/posted-events">My Posted events</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+@code {
+    [Parameter]
+    public int UserId { get; set; } = 1;
+}
