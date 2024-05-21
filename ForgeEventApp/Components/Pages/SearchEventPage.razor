@@ -1,45 +1,46 @@
-﻿@page "/search"
+﻿@page "/search/{Category?}/{SearchString?}"
 @inject HttpClient HttpClient
 
 <h3>SearchEventPage</h3>
 
-<form class="d-flex" role="search">
-    <Dropdown Size="Size.Small" id="nav-dropdown">
-        <DropdownToggleButton Color="ButtonColor.None">Categories</DropdownToggleButton>
-        <DropdownMenu>
-            <DropdownHeader>Categories</DropdownHeader>
-            @if (CategoriesDisplay != null)
-            {
-                foreach (var (category, name) in CategoriesDisplay)
-                {
-                    <DropdownItem @onclick="() => CategorySelect(category)">
-                        @name
-                    </DropdownItem>
-                }
-            }
-            else
-            {
-                <DropdownItem disabled>Loading categories...</DropdownItem>
-            }
-        </DropdownMenu>
-    </Dropdown>
-    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success" type="submit">Search</button>
-</form>
+<div class="container d-flex flex-column">
+	@if (EventSearch is null)
+	{
+		<p>Loading...</p>
+	}
+	else
+	{
+		@foreach (var item in EventSearch)
+		{
+			<div class="d-flex justify-content-center">
+				<div class="col-3 p-1" style="width: 50%">
+					<div class="card h-100">
+						<a href="@($"event-details/{item.Id}")" style="text-decoration: none; color: inherit;">
+							<img src="/images/EventImages/@item.ImageUrl" class="img-fluid card-img-top" alt="@item.Name" />
+							<div class="card-body">
+								<h5 class="card-title">@item.Name</h5>
+								<p class="card-text">@item.Date.ToString("dddd, dd MMMM yyyy")</p>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		}
+	}
+</div>
 
 @code {
-    private IEnumerable<(Category,string)>? CategoriesDisplay;
-    private IEnumerable<Event>? Events;
+    private IEnumerable<string>? CategoriesDisplay;
+    private IEnumerable<Event>? EventSearch;
     
+	[Parameter]
+	public string? Category { get; set; }
+
+	[Parameter]
+	public string? SearchString { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        CategoriesDisplay = await HttpClient.GetFromJsonAsync<IEnumerable<(Category, string)>>("https://localhost:7206/api/Events/categories");
-        Events = await HttpClient.GetFromJsonAsync<IEnumerable<Event>>("https://localhost:7206/api/Events/search");
-        
-    }
-
-    private void CategorySelect(Category category)
-    {
-        
+		EventSearch = await HttpClient.GetFromJsonAsync<IEnumerable<Event>>($"https://localhost:7206/api/Events/search?category={Category}&searchString={SearchString}");
     }
 }

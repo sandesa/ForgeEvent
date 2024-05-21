@@ -79,14 +79,14 @@ namespace ForgeEventApp.Repositories
         {
             var categories = new List<(Category, string)>
             {
-                ((Category)0, "Music"),
-                ((Category)1, "Technology"),
-                ((Category)2, "Food & Drinks"),
-                ((Category)3, "Sports"),
-                ((Category)4, "Art & Culture"),
-                ((Category)5, "Fashion"),
-                ((Category)6, "Comedy"),
-                ((Category)7, "Film")
+                ((Category)1, "Music"),
+                ((Category)2, "Technology"),
+                ((Category)3, "Food & Drinks"),
+                ((Category)4, "Sports"),
+                ((Category)5, "Art & Culture"),
+                ((Category)6, "Fashion"),
+                ((Category)7, "Comedy"),
+                ((Category)8, "Film")
             };
 
             return await Task.FromResult(categories.AsEnumerable());

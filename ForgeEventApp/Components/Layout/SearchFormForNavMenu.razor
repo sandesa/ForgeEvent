@@ -1,37 +1,40 @@
 ﻿@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
-<Dropdown Size="Size.Small" id="nav-dropdown">
-    <DropdownToggleButton Color="ButtonColor.None">Categories</DropdownToggleButton>
-    <DropdownMenu>
-        <DropdownHeader>Categories</DropdownHeader>
-        @if (CategoriesDisplay != null)
-        {
-            foreach (var category in CategoriesDisplay)
+<EditForm method="post" Model="SearchRequest" OnValidSubmit="Search" FormName="search" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+
+    @if (CategoriesDisplay != null)
+    {
+        <InputSelect class="form-select" @bind-Value="SearchRequest.Category">
+            <option value="">Select an option</option>
+            @foreach (var category in Enum.GetValues(typeof(Category)))
             {
-                <DropdownItem @onclick="() => CategorySelect(category)">
-                    @category
-                </DropdownItem>
+                <option value="@((int)category)">@category</option>
             }
-        }
-        else
-        {
-            <DropdownItem disabled>Loading categories...</DropdownItem>
-        }
-    </DropdownMenu>
-</Dropdown>
-<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-
+        </InputSelect>
+    }
+    <div class="mb-3">
+                <label for="name" class="form-label">Name:</label>
+                <InputText id="name" @bind-Value="SearchRequest.SearchString" class="form-control" />
+            </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</EditForm>
 
 @code {
-    private IEnumerable<string>? CategoriesDisplay;
+    private IEnumerable<string> CategoriesDisplay;
+
+    [SupplyParameterFromForm]
+    private SearchRequest SearchRequest { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         CategoriesDisplay = await HttpClient.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7206/api/Events/categories");
     }
 
-    private void CategorySelect(string category)
+    public async Task Search()
     {
-
+        NavigationManager.NavigateTo($"/search/{SearchRequest.Category}/{SearchRequest.SearchString}");
     }
 }

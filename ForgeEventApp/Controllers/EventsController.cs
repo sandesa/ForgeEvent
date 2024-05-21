@@ -39,14 +39,23 @@ namespace ForgeEventApp.Controllers
 
 			return Ok(categoryDisplay);
 		}
-        [HttpGet("category")]
-        public async Task<ActionResult<string>> GetCategories(Category category)
+		[HttpGet("enums")]
+        public async Task<ActionResult<IEnumerable<string>>> GetCategoriesEnum()
         {
             IEnumerable<(Category, string)> categories = await _eventRepository.GetCategoryAsync();
 
-			var findCategory = categories.FirstOrDefault(c => c.Item1 == category);
+            IEnumerable<Category> categoryDisplay = categories.Select(c => c.Item1);
 
-			string categoryDisplay = findCategory.Item2;
+            return Ok(categoryDisplay);
+        }
+        [HttpGet("select/{category}")]
+        public async Task<ActionResult<Category>> GetCategories(string category)
+        {
+            IEnumerable<(Category, string)> categories = await _eventRepository.GetCategoryAsync();
+
+			var findCategory = categories.FirstOrDefault(c => c.Item2 == category);
+
+			Category categoryDisplay = findCategory.Item1;
 
             return Ok(categoryDisplay);
         }
@@ -60,7 +69,7 @@ namespace ForgeEventApp.Controllers
 		}
 
 		[HttpGet("search")]
-		public async Task<ActionResult<IEnumerable<Event>>> GetEventSearch([FromQuery] Category category, [FromQuery] string searchString)
+		public async Task<ActionResult<IEnumerable<Event>>> EventSearch([FromQuery] Category category, [FromQuery] string? searchString)
 		{
 			var searchEvent = await _eventRepository.SearchEventAsync(category, searchString);
 
