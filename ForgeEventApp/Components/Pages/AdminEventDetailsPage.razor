@@ -1,0 +1,100 @@
+﻿@page "/profilepage/{UserId:int}/admin-event-details/{EventId:int}"
+@inject NavigationManager NavigationManager
+@inject IRatingRepository RatingRepository
+@inject IEventRepository EventRepository
+@inject HttpClient HttpClient
+
+<PageTitle>Event Details</PageTitle>
+
+@if (Event == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="details-container">
+        <h1>@Event.Name</h1>
+        <img src="/images/EventImages/@Event.ImageUrl" class="img-fluid" alt="@Event.Name" style="width: 50%" />
+        <p class="mt-2"><strong>Address:</strong> @Event.Address</p>
+        <p><strong>Date:</strong> @Event.Date.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
+        <p><strong>Description:</strong> @Event.Description</p>
+        <p><strong>Price:</strong> @Event.Price $</p>
+        <p><strong>Category:</strong> @Event.Category</p>
+
+        <h5><b>Event Admin Information</b></h5>
+        <p><strong>Admin Name:</strong> @Event.User.FirstName @Event.User.LastName</p>
+        <p><strong>Phone:</strong> @Event.User.PhoneNumber</p>
+        <p><strong>Email:</strong> @Event.User.Email</p>
+        @if(ticketsLeft > 0)
+        {
+            <p><strong>Ticktes left:</strong> @ticketsLeft</p>
+        }
+        else
+        {
+            <p><span class="text-success">SOLD OUT!</span> (<strong>Ticktes left:</strong> @ticketsLeft)</p>
+        }
+
+        <a class="btn btn-primary mb-4">View event statistics</a>
+
+        
+    </div>
+
+    <h3>Ratings</h3>
+
+    @if (ratings != null && ratings.Any())
+    {
+        <p><strong>Average score:</strong> @score / 5</p>
+
+        @foreach (var rating in ratings)
+        {
+            <div class="card mx-auto mb-2" style="max-width: 600px;">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        @for (int i = 0; i < rating.Score; i++)
+                        {
+                            <span><Icon Name="IconName.StarFill" Color="IconColor.Warning" Size="IconSize.x5" /></span>
+                        }
+                    </div>
+                    <div>
+                        <span><strong>By user:</strong> @rating.User.FirstName</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">@rating.Comment</p>
+                    <p class="card-text"><strong>Created:</strong> @rating.CreatedAt</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No ratings yet</p>
+    }
+}
+
+@code {
+    [Parameter]
+    public int EventId { get; set; }
+
+    [Parameter]
+    public int UserId { get; set; }
+
+    private Event? Event;
+    private IEnumerable<Rating>? ratings;
+    private decimal score = 0;
+    private int ticketsLeft = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        {
+            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
+            ratings = await RatingRepository.GetAllRatingsForEventAsync(EventId);
+            ticketsLeft = await EventRepository.GetTicketAmountAsync(EventId);
+
+            if(ratings != null && ratings.Any())
+            {
+                score = await RatingRepository.GetAverageScoreAsync(EventId);
+            }
+        }
+    }
+}

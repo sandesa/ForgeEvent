@@ -1,0 +1,47 @@
+﻿@page "/profilepage/{UserId:int}/bookings"
+@using ForgeEventApp.Components.Layout
+@inject IBookingService IBookingService
+@layout ProfilePageLayout
+
+<PageTitle>Bookings</PageTitle>
+
+<h3 class="text-center">Bookings</h3>
+
+@if (bookings is null || !bookings.Any())
+{
+    <p>You have no booked event</p>
+}
+else
+{
+    <p class="text-center">Your bookings:</p>
+
+    @foreach (var booking in bookings)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="col-3 p-1" style="width: 30%">
+                <div class="card h-100">
+                    <a href="@($"bookingdetails/{booking.Id}")" style="text-decoration: none; color: inherit;">
+                        <img src="/images/EventImages/@booking.Event.ImageUrl" class="img-fluid card-img-top" alt="@booking.Event.Name" />
+                        <div class="card-body">
+                            <h5 class="card-title">@booking.Event.Name</h5>
+                            <p class="card-text">@booking.Event.Date.ToString("dddd, dd MMMM yyyy")</p>
+                            <hr />
+                            <p class="card-text"><b>Purchased:</b> @booking.CreatedAt.ToString("dd MMMM yyyy, kl: HH:MM")</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private IEnumerable<Booking>? bookings;
+    [Parameter]
+    public int UserId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+            bookings = await IBookingService.GetAllBookingsByUserIdAsync(UserId);
+    }
+}

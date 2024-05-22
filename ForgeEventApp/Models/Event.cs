@@ -2,9 +2,20 @@
 using Microsoft.AspNetCore.Mvc.Diagnostics;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace ForgeEventApp.Models
 {
+    public enum Category
+    {
+        Music = 1,
+        Technology,
+        Food_And_Drinks,
+        Sports,
+        Art_And_Culture,
+        Fashion,
+        Comedy,
+        Film,
+        All_Category
+    }
     public class Event
     {
         public int Id { get; set; }
@@ -21,7 +32,7 @@ namespace ForgeEventApp.Models
         public string Address { get; set;}
 
         [ValidateSetDates(ErrorMessage = "The date must be at least 30 days ahead of today's date.")]
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
 
         public DateTime CreatedAt { get; set; }
 
@@ -30,6 +41,12 @@ namespace ForgeEventApp.Models
 
         [Range(1, 9999, ErrorMessage = "Ticket price must be at least 1")]
         public decimal Price { get; set; }
+
+		//[Required(ErrorMessage = "required event category")] 
+		public Category Category { get; set; }
+
+		//[Required(ErrorMessage = "euerror")]
+		public User? User { get; set; }
 
     }
 }

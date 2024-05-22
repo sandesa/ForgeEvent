@@ -1,0 +1,47 @@
+﻿@page "/bookingdetails/{bookingId}"
+@inject IBookingService IBookingService
+
+<PageTitle>Booking Details</PageTitle>
+
+@if (booking is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="details-container">
+        <h1>@booking.Event.Name</h1>
+        <img src="/images/EventImages/@booking.Event.ImageUrl" class="img-fluid" alt="@booking.Event.Name" style="width: 50%" />
+        <p class="mt-2 ">Address: @booking.Event.Address</p>
+        <p>Date: @booking.Event.Date.ToString("dddd, dd MMMM yyyy")</p>
+        <p>Description: @booking.Event.Description</p>
+        <p>Price: @booking.Event.Price $</p>
+        <p>Category: @booking.Event.Category</p>
+
+        <h5><b>Event Admin Information</b></h5>
+        <p>Admin Name: @booking.Event.User.FirstName @booking.Event.User.LastName</p>
+        <p>Phone: @booking.Event.User.PhoneNumber</p>
+        <p>Email: @booking.Event.User.Email</p>
+
+        <a href="@($"rate/{booking.Event.Id}")" class="btn btn-primary mb-4">Rate the event</a>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string? BookingId { get; set; }
+
+    private Booking? booking;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (int.TryParse(BookingId, out int bookingId))
+        {
+            booking = await IBookingService.GetBookingById(bookingId);
+        }
+        else
+        {
+            //error page
+        }
+    }
+}

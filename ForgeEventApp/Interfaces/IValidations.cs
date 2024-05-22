@@ -1,10 +1,10 @@
-﻿namespace ForgeEventApp.Interfaces
+﻿
+namespace ForgeEventApp.Interfaces;
+
+public interface IValidations
 {
-    public interface IValidations
-    {
-       Task<bool> SubmitFormAsync(Action formSubmit);
-       Task RestValidFormBool();
-       Task<bool> ValidateTicketAmount(int ticketAmount);
-       Task<bool> ValidateTicketAmountLeft(int ticketAmount, int id);
-    }
+   Task<bool> SubmitFormAsync(Action formSubmit);
+   Task RestValidFormBool();
+   Task<bool> ValidateTicketAmountLeft(int ticketAmount, int id);
+   string DisplayCategory(object category);
 }

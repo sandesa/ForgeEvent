@@ -4,8 +4,8 @@ namespace ForgeEventApp.Models
 {
     public enum Role
     {
-        Account = 0,
-        Admin = 1
+        User = 1,
+        Admin,
     }
 
     public class User
@@ -30,6 +30,6 @@ namespace ForgeEventApp.Models
         [Required(ErrorMessage = "Required password")]
 		public string Password { get; set; }
 
-		public string Salt { get; set; }
+		public string? Salt { get; set; }
     }
 }
