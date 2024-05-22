@@ -40,8 +40,8 @@ else
         </button>
     </div>
 }
-        <a href="@($"ticketpurchasepage/{EventId}")" class="btn btn-primary mb-4">Order Tickets</a>
-    </div>
+        
+    
 
     <h3>Ratings</h3>
 
@@ -74,7 +74,7 @@ else
     {
         <p>No ratings yet</p>
     }
-}
+
 
 @code {
     [Parameter]
@@ -88,7 +88,16 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
+            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
+            ratings = await RatingRepository.GetAllRatingsForEventAsync(EventId);
+
+            if(ratings != null && ratings.Any())
+            {
+                foreach(var rating in ratings)
+                {
+                    score += rating.Score;
+                }
+            }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -109,16 +118,6 @@ else
 
         if (IsFavorite)
         {
-            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{id}");
-            ratings = await RatingRepository.GetAllRatingsForEventAsync(id);
-
-            if(ratings != null && ratings.Any())
-            {
-                foreach(var rating in ratings)
-                {
-                    score += rating.Score;
-                }
-            }
             favorites.Remove(EventId);
         }
         else
