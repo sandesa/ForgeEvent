@@ -50,6 +50,18 @@
                 <InputNumber id="price" @bind-Value="newEvent.Price" class="form-control" />
                 <ValidationMessage For="() => newEvent.Price" class="text-danger" />
             </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Category:</label>
+
+                  <InputSelect id="category" @bind-Value="newEvent.Category" class="form-control">
+                        @foreach (var category in Enum.GetValues(typeof(Category)))
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="() => newEvent.Category" class="text-danger" />
+                
+            </div>
             <button type="submit" class="btn btn-primary">Create</button>
             @if (showSuccessMessage)
             {
@@ -60,19 +72,7 @@
         </EditForm>
     </div>
 </div>
-@if (CategoriesDisplay == null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <select>
-        @foreach (var category in CategoriesDisplay)
-        {
-            <option value="@category">@category</option>
-        }
-    </select>
-}
+
 
 
 @code {
