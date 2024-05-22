@@ -1,6 +1,8 @@
 ﻿@page "/event-details/{eventId}"
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
+@inject ILocalStorageService LocalStorage
+@rendermode InteractiveServer
 
 <PageTitle>Event Details</PageTitle>
 
@@ -25,6 +27,16 @@ else
         <p>Email: @Event.User.Email</p>
 
         <a href="@($"ticketpurchasepage/{EventId}")" class="btn btn-primary">Order Tickets</a>
+        <button @onclick="ToggleFavorite" class="btn btn-secondary">
+            @if (IsFavorite)
+            {
+                <span>Remove from Favorites</span>
+            }
+            else
+            {
+                <span>Add to Favorites</span>
+            }
+        </button>
     </div>
 }
 
@@ -33,6 +45,8 @@ else
     public string EventId { get; set; }
 
     private Event Event;
+    private bool IsFavorite = false;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -44,5 +58,29 @@ else
         {
             //error page 
         }
+    }
+    private async Task ToggleFavorite()
+    {
+        if (int.TryParse(EventId, out int id))
+        {
+            var favorites = await LocalStorage.GetItemAsync<List<int>>("favoriteEvents") ?? new List<int>();
+
+            if (IsFavorite)
+            {
+                favorites.Remove(id);
+            }
+            else
+            {
+                favorites.Add(id);
+            }
+
+            await LocalStorage.SetItemAsync("favoriteEvents", favorites);
+            IsFavorite = !IsFavorite;
+        }
+    }
+    private async Task<bool> IsEventFavorite(int eventId)
+    {
+        var favorites = await LocalStorage.GetItemAsync<List<int>>("favoriteEvents") ?? new List<int>();
+        return favorites.Contains(eventId);
     }
 }
