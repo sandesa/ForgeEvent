@@ -1,0 +1,76 @@
+﻿@page "/profilepage/{UserId:int}/SavedEvents"
+@inject ILocalStorageService LocalStorage
+@inject HttpClient httpClient
+@rendermode InteractiveServer
+
+
+<PageTitle>Saved Events</PageTitle>
+
+<h3>Saved Events</h3>
+@if (favoriteEvents == null)
+{
+    <p>Loading favorite events...</p>
+}
+else if (!favoriteEvents.Any())
+{
+    <p>No favorite events found.</p>
+}
+else
+{
+    <ul>
+        @foreach (var eventItem in favoriteEvents)
+        {
+            <div class="d-flex justify-content-center">
+                <div class="col-3 p-1" style="width: 30%">
+                    <div class="card h-100">
+                        <a href="@($"event-details/{eventItem.Id}")" style="text-decoration: none; color: inherit;">
+                            <img src="/images/EventImages/@eventItem.ImageUrl" class="img-fluid card-img-top" alt="@eventItem.Name" />
+                            <div class="card-body">
+                                <h5 class="card-title">@eventItem.Name</h5>
+                                <p class="card-text">@eventItem.Date.ToString("dddd, dd MMMM yyyy")</p>
+                                <hr />
+                                <p class="card-text"><b>Ticket Price:</b> @eventItem.Price</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </ul>
+}
+
+@code {
+    private User? profile;
+    private List<Event> favoriteEvents = new List<Event>();
+
+    [Parameter]
+    public int UserId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        profile = await httpClient.GetFromJsonAsync<User>($"https://localhost:7206/api/Users/{UserId}");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadFavoriteEvents();
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadFavoriteEvents()
+    {
+        var favoriteEventIds = await LocalStorage.GetItemAsync<List<int>>("favoriteEvents") ?? new List<int>();
+
+        foreach (var eventId in favoriteEventIds)
+        {
+            var eventItem = await httpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{eventId}");
+            if (eventItem != null)
+            {
+                favoriteEvents.Add(eventItem);
+            }
+        }
+    }
+}

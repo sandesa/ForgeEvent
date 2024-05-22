@@ -39,35 +39,11 @@
             </table>
         }
     </div>
-    <h3>Favorited Events</h3>
-    @if (favoriteEvents == null)
-    {
-        <p>Loading favorite events...</p>
-    }
-    else if (!favoriteEvents.Any())
-    {
-        <p>No favorite events found.</p>
-    }
-    else
-    {
-        <ul>
-            @foreach (var eventItem in favoriteEvents)
-            {
-                <li>
-                    <strong>@eventItem.Name</strong><br />
-                    Date: @eventItem.Date.ToString("dddd, dd MMMM yyyy")<br />
-                    Price: @eventItem.Price $
-                </li>
-            }
-        </ul>
-    }
-
 </div>
 
 @code {
     private User? profile;
     private IEnumerable<Booking>? bookings;
-    private List<Event> favoriteEvents = new List<Event>();
 
     [Parameter]
     public int UserId { get; set; }
@@ -76,28 +52,5 @@
     {
         profile = await httpClient.GetFromJsonAsync<User>($"https://localhost:7206/api/Users/{UserId}");
         bookings = await IBookingService.GetAllBookingsByUserIdAsync(UserId);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await LoadFavoriteEvents();
-            StateHasChanged();
-        }
-    }
-
-    private async Task LoadFavoriteEvents()
-    {
-        var favoriteEventIds = await LocalStorage.GetItemAsync<List<int>>("favoriteEvents") ?? new List<int>();
-
-        foreach (var eventId in favoriteEventIds)
-        {
-            var eventItem = await httpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{eventId}");
-            if (eventItem != null)
-            {
-                favoriteEvents.Add(eventItem);
-            }
-        }
     }
 }
