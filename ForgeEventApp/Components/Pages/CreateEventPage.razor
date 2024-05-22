@@ -20,11 +20,7 @@
                 <InputText id="name" @bind-Value="newEvent.Name" class="form-control" />
                 <ValidationMessage For="() => newEvent.Name" class="text-danger" />
             </div>
-            <div class="mb-3">
-                <label for="imageurl" class="form-label">ImageUrl:</label>
-                <InputText id="imageurl" @bind-Value="newEvent.ImageUrl" class="form-control" />
-                <ValidationMessage For="() => newEvent.ImageUrl" class="text-danger" />
-            </div>
+
             <div class="mb-3">
                 <label for="ticketamount" class="form-label">TicketAmount:</label>
                 <InputNumber id="ticketamount" @bind-Value="newEvent.TicketAmount" class="form-control" />
