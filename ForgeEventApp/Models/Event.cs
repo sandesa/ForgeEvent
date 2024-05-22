@@ -7,13 +7,13 @@ namespace ForgeEventApp.Models
     public enum Category
     {
         Music = 1,
-        Technology,
-        Food_And_Drinks,
-        Sports,
-        Art_And_Culture,
-        Fashion,
-        Comedy,
-        Film
+        Technology = 2,
+        FoodAndDrinks = 3,  
+        Sports = 4,
+        ArtAndCulture = 5,  
+        Fashion = 6,
+        Comedy = 7,
+        Film = 8,
     }
     public class Event
     {
