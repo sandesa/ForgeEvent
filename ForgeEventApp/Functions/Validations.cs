@@ -41,7 +41,24 @@ public class Validations : IValidations
         formValid = false;
     }
 
+    public string DisplayCategory(object category)
+    {
+        string changed = "";
 
+        foreach(char c in category.ToString())
+        {
+            if (c == '_')
+            {
+                changed += " ";
+            }
+            else
+            {
+                changed += c;
+            }
+        }
+
+        return changed;
+    }
 
     public async Task<bool> ValidateTicketAmountLeft(int ticketAmount, int id)
     {
