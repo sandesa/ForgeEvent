@@ -1,7 +1,9 @@
-﻿@page "/event-details/{eventId}"
+﻿@page "/event-details/{eventId:int}"
 @inject NavigationManager NavigationManager
 @inject IRatingRepository RatingRepository
 @inject HttpClient HttpClient
+@inject ILocalStorageService LocalStorage
+@rendermode InteractiveServer
 
 <PageTitle>Event Details</PageTitle>
 
@@ -25,8 +27,21 @@ else
         <p><strong>Phone:</strong> @Event.User.PhoneNumber</p>
         <p><strong>Email:</strong> @Event.User.Email</p>
 
-        <a href="@($"ticketpurchasepage/{EventId}")" class="btn btn-primary mb-4">Order Tickets</a>
+        <a href="@($"ticketpurchasepage/{EventId}")" class="btn btn-primary">Order Tickets</a>
+        <button @onclick="ToggleFavorite" class="btn btn-secondary">
+            @if (IsFavorite)
+            {
+                <span>Remove from Favorites</span>
+            }
+            else
+            {
+                <span>Add to Favorites</span>
+            }
+        </button>
     </div>
+}
+        
+    
 
     <h3>Ratings</h3>
 
@@ -59,27 +74,63 @@ else
     {
         <p>No ratings yet</p>
     }
-}
+
 
 @code {
     [Parameter]
-    public string EventId { get; set; }
+    public int EventId { get; set; }
 
     private Event? Event;
     private IEnumerable<Rating>? ratings;
     private decimal score = 0;
+    private bool IsFavorite = false;
+    private bool IsRendered = false;
 
     protected override async Task OnInitializedAsync()
     {
-        if (int.TryParse(EventId, out int id))
-        {
-            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{id}");
-            ratings = await RatingRepository.GetAllRatingsForEventAsync(id);
+            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
+
+            ratings = await HttpClient.GetFromJsonAsync<IEnumerable<Rating>>($"https://localhost:7206/api/Ratings/{EventId}");
 
             if(ratings != null && ratings.Any())
             {
                 score = await RatingRepository.GetAverageScoreAsync(id);
             }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            IsFavorite = await IsEventFavorite(EventId);
+            IsRendered = true;
+            StateHasChanged(); 
         }
     }
+
+    private async Task ToggleFavorite()
+    {
+        if (!IsRendered) return; 
+
+        var favorites = await LocalStorage.GetItemAsync<List<int>>("favoriteEvents") ?? new List<int>();
+
+        if (IsFavorite)
+        {
+            favorites.Remove(EventId);
+        }
+        else
+        {
+            favorites.Add(EventId);
+        }
+
+        await LocalStorage.SetItemAsync("favoriteEvents", favorites);
+        IsFavorite = !IsFavorite;
+    }
+
+    private async Task<bool> IsEventFavorite(int eventId)
+    {
+        var favorites = await LocalStorage.GetItemAsync<List<int>>("favoriteEvents") ?? new List<int>();
+        return favorites.Contains(eventId);
+    }
+
 }

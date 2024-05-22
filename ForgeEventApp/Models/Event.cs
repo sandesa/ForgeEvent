@@ -2,19 +2,19 @@
 using Microsoft.AspNetCore.Mvc.Diagnostics;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace ForgeEventApp.Models
 {
     public enum Category
     {
-        Music,
+        Music = 1,
         Technology,
         Food_And_Drinks,
         Sports,
         Art_And_Culture,
         Fashion,
         Comedy,
-        Film
+        Film,
+        All_Category
     }
     public class Event
     {
@@ -43,7 +43,7 @@ namespace ForgeEventApp.Models
         public decimal Price { get; set; }
 
 		//[Required(ErrorMessage = "required event category")] 
-		public Category? Category { get; set; }
+		public Category Category { get; set; }
 
 		//[Required(ErrorMessage = "euerror")]
 		public User? User { get; set; }

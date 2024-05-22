@@ -16,8 +16,8 @@ namespace ForgeEventApp.Controllers
 			_ratingRepository = ratingsRepository;
 		}
 
-		[HttpGet]
-		public async Task<ActionResult<Rating>> GetAllRatingsForEvent(int id)
+		[HttpGet("{id}")]
+		public async Task<ActionResult<IEnumerable<Rating>>> GetAllRatingsForEvent(int id)
 		{
 			var ratings = await _ratingRepository.GetAllRatingsForEventAsync(id);
 
