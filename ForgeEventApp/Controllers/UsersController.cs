@@ -29,9 +29,9 @@ namespace ForgeEventApp.Controllers
         {
             var userDetails = await _userRepository.GetUserFromIdAsync(id); 
 
-            if (userDetails == null)
+            if (userDetails is null)
             {
-               
+				return NotFound();
             }
             return Ok(userDetails); 
         }

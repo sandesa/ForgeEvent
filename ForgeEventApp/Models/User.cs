@@ -30,7 +30,6 @@ namespace ForgeEventApp.Models
         [Required(ErrorMessage = "Required password")]
 		public string Password { get; set; }
 
-        [Required(ErrorMessage = "Error S")]
-		public string Salt { get; set; }
+		public string? Salt { get; set; }
     }
 }
