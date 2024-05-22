@@ -13,6 +13,16 @@ namespace ForgeEventApp.Repositories
         {
             _context = context;
         }
+
+        public async Task<IEnumerable<Event>> GetAllEventsAsync()
+        {
+            return await _context.Events.Select(e => e).ToListAsync();
+        }
+        public async Task<IEnumerable<Event>> GetAllEventsPostedByUserAsync(int userId)
+        {
+            var events = await _context.Events.Where(e => e.User.Id == userId).ToListAsync();
+            return events is null ? throw new InvalidOperationException($"Cannot find any posted events from user with ID {userId}") : events;
+        }
         public async Task CreateEventAsync(Event events)
         {
             Event newEvent = new()
@@ -44,6 +54,16 @@ namespace ForgeEventApp.Repositories
         {
             return await _context.Events.Where(e => e.Category == category).ToListAsync();
         }
+
+        public async Task UpdateTicketAmountAsync(int eventId, int newTicketAmount)
+        {
+            var ev = await _context.Events.FindAsync(eventId);
+            if (ev != null)
+            {
+                ev.TicketAmount = newTicketAmount;
+                await _context.SaveChangesAsync();
+            }
+        }   
         public async Task<IEnumerable<Event>> SearchEventAsync(Category category, string searchString)
         {
             IEnumerable<Event> query = await GetAllEventsAsync();
@@ -90,6 +110,7 @@ namespace ForgeEventApp.Repositories
 
             return ev?.Price ?? 0;
         }
+
 
     }
 }

@@ -1,0 +1,39 @@
+﻿@page "/rate/{eventId:int}"
+@inject IRatingRepository RatingRepository
+@inject NavigationManager NavigationManager
+
+<PageTitle>Rate Event</PageTitle>
+
+<h3>Rate Event</h3>
+
+<EditForm method="post" Model="newRating" OnValidSubmit="HandleValidSubmit" class="container" FormName="addRating">
+    <DataAnnotationsValidator /> 
+    <ValidationSummary />
+    <div class="row justify-content-center">
+        <div class="mb-4" style="width: 100px">
+            <label for="score-input">Score</label>
+            <InputNumber @bind-Value="newRating.Score" Min="1" Max="5" class="form-control" id="score-input"/>
+        </div>
+
+        <div class="mb-4" style="width: 500px">
+            <InputTextArea @bind-Value="newRating.Comment" placeholder="Leave a comment..." class="form-control" />
+        </div>
+
+    </div>
+    <button type="submit" class="btn btn-primary mb-4">Submit</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int EventId { get; set; }
+
+    [SupplyParameterFromForm]
+    public Rating newRating { get; set; } = new();
+
+    private async Task HandleValidSubmit()
+    {
+        await RatingRepository.AddRatingAsync(newRating, userId: 1, EventId);
+        
+        NavigationManager.NavigateTo($"/event-details/{EventId}");
+    }
+}

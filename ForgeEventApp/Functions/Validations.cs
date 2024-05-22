@@ -41,6 +41,7 @@ public class Validations : IValidations
         formValid = false;
     }
 
+
     public string DisplayCategory(object category)
     {
         string changed = "";
@@ -62,15 +63,6 @@ public class Validations : IValidations
 
     public async Task<bool> ValidateTicketAmountLeft(int ticketAmount, int id)
     {
-        int amount = ticketAmount;
-        int eventId = id;
-        int ticketAmountLeft = await _eventRepository.GetTicketAmountAsync(eventId);
-
-        if (ticketAmountLeft > amount)
-        {
-            return false;
-        }
-
-        return true;
+        return ticketAmount > 0;
     }
 }
