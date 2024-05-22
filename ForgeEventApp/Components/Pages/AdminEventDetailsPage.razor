@@ -1,6 +1,7 @@
-﻿@page "/event-details/{eventId}"
+﻿@page "/profilepage/{UserId:int}/admin-event-details/{EventId:int}"
 @inject NavigationManager NavigationManager
 @inject IRatingRepository RatingRepository
+@inject IEventRepository EventRepository
 @inject HttpClient HttpClient
 
 <PageTitle>Event Details</PageTitle>
@@ -11,7 +12,7 @@
 }
 else
 {
-    <div class="details-container"> 
+    <div class="details-container">
         <h1>@Event.Name</h1>
         <img src="/images/EventImages/@Event.ImageUrl" class="img-fluid" alt="@Event.Name" style="width: 50%" />
         <p class="mt-2"><strong>Address:</strong> @Event.Address</p>
@@ -24,8 +25,18 @@ else
         <p><strong>Admin Name:</strong> @Event.User.FirstName @Event.User.LastName</p>
         <p><strong>Phone:</strong> @Event.User.PhoneNumber</p>
         <p><strong>Email:</strong> @Event.User.Email</p>
+        @if(ticketsLeft > 0)
+        {
+            <p><strong>Ticktes left:</strong> @ticketsLeft</p>
+        }
+        else
+        {
+            <p><span class="text-success">SOLD OUT!</span> (<strong>Ticktes left:</strong> @ticketsLeft)</p>
+        }
 
-        <a href="@($"ticketpurchasepage/{EventId}")" class="btn btn-primary mb-4">Order Tickets</a>
+        <a class="btn btn-primary mb-4">View event statistics</a>
+
+        
     </div>
 
     <h3>Ratings</h3>
@@ -63,22 +74,26 @@ else
 
 @code {
     [Parameter]
-    public string EventId { get; set; }
+    public int EventId { get; set; }
+
+    [Parameter]
+    public int UserId { get; set; }
 
     private Event? Event;
     private IEnumerable<Rating>? ratings;
     private decimal score = 0;
+    private int ticketsLeft = 0;
 
     protected override async Task OnInitializedAsync()
     {
-        if (int.TryParse(EventId, out int id))
         {
-            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{id}");
-            ratings = await RatingRepository.GetAllRatingsForEventAsync(id);
+            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
+            ratings = await RatingRepository.GetAllRatingsForEventAsync(EventId);
+            ticketsLeft = await EventRepository.GetTicketAmountAsync(EventId);
 
             if(ratings != null && ratings.Any())
             {
-                score = await RatingRepository.GetAverageScoreAsync(id);
+                score = await RatingRepository.GetAverageScoreAsync(EventId);
             }
         }
     }
