@@ -1,10 +1,6 @@
 ﻿@page "/createuserpage"
 @inject HttpClient HttpClient
 @inject ForgeEventApp.Interfaces.IValidations FORMSUCCESS
-@using ForgeEventApp.Functions
-@using ForgeEventApp.Models
-@attribute [StreamRendering]
-
 
 <h3>CreateUserPage</h3>
 <div class="row">
@@ -38,18 +34,14 @@
                 <ValidationMessage For="() => User.Password" class="text-danger" />
             </div>
             <input type="hidden" id="rolehidden"  @bind="User.Role" /> 
-            <div class="mb-3">
-                <label class="form-label">Role:</label>
-                
-                <div>
-                    <InputRadioGroup @bind-Value="User.Role">
-                        <InputRadio @bind-Value="User.Role=Role.Admin" />
-                        <InputRadio @bind-Value="User.Role=Role.User" />
-                    </InputRadioGroup>
-                    <ValidationMessage For="() => User.Role" class="text-danger" />
-                </div>
-              
-            </div>
+           <div class="mb-3">
+               <label class="form-label">Role:</label>
+                   <InputRadioGroup @bind-Value="User.Role" class="form-control" Name="Role">
+                       <InputRadio Value="Role.Admin" id="admin" Name="Role" /> <label for="admin">Admin</label>
+                   <InputRadio Value="Role.User" id="user" Name="Role" /> <label for="user">User</label>
+                   </InputRadioGroup>
+                   <ValidationMessage For="() => User.Role" class="text-danger" />
+           </div>
             <button type="submit" class="btn btn-primary">Create</button>
             @if (showSuccessMessage)
             {
@@ -69,7 +61,7 @@
     
     public async Task AddUser()
     {
-        await HttpClient.PostAsJsonAsync($"https://localhost:7206/api/User/{User}", User);
+        await HttpClient.PostAsJsonAsync($"https://localhost:7206/api/Users/{User}", User);
 
         await FORMSUCCESS.SubmitFormAsync(() =>
         {
