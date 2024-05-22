@@ -1,5 +1,6 @@
 ﻿@page "/event-details/{eventId:int}"
 @inject NavigationManager NavigationManager
+@inject IRatingRepository RatingRepository
 @inject HttpClient HttpClient
 @inject ILocalStorageService LocalStorage
 @rendermode InteractiveServer
@@ -12,19 +13,19 @@
 }
 else
 {
-    <div class="details-container">
+    <div class="details-container"> 
         <h1>@Event.Name</h1>
         <img src="/images/EventImages/@Event.ImageUrl" class="img-fluid" alt="@Event.Name" style="width: 50%" />
-        <p>Address: @Event.Address</p>
-        <p>Date: @Event.Date.ToString("dddd, dd MMMM yyyy")</p>
-        <p>Description: @Event.Description</p>
-        <p>Price: @Event.Price $</p>
-        <p>Category: @Event.Category</p>
+        <p class="mt-2"><strong>Address:</strong> @Event.Address</p>
+        <p><strong>Date:</strong> @Event.Date.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
+        <p><strong>Description:</strong> @Event.Description</p>
+        <p><strong>Price:</strong> @Event.Price $</p>
+        <p><strong>Category:</strong> @Event.Category</p>
 
-        <h2>Event Admin Information</h2>
-        <p>Admin Name: @Event.User.FirstName @Event.User.LastName</p>
-        <p>Phone: @Event.User.PhoneNumber</p>
-        <p>Email: @Event.User.Email</p>
+        <h5><b>Event Admin Information</b></h5>
+        <p><strong>Admin Name:</strong> @Event.User.FirstName @Event.User.LastName</p>
+        <p><strong>Phone:</strong> @Event.User.PhoneNumber</p>
+        <p><strong>Email:</strong> @Event.User.Email</p>
 
         <a href="@($"ticketpurchasepage/{EventId}")" class="btn btn-primary">Order Tickets</a>
         <button @onclick="ToggleFavorite" class="btn btn-secondary">
@@ -39,12 +40,49 @@ else
         </button>
     </div>
 }
+        <a href="@($"ticketpurchasepage/{EventId}")" class="btn btn-primary mb-4">Order Tickets</a>
+    </div>
+
+    <h3>Ratings</h3>
+
+    @if (ratings != null && ratings.Any())
+    {
+        <p><strong>Average score:</strong> @(score / ratings.Count()) / 5</p>
+
+        @foreach (var rating in ratings)
+        {
+            <div class="card mx-auto mb-2" style="max-width: 600px;">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        @for (int i = 0; i < rating.Score; i++)
+                        {
+                            <span><Icon Name="IconName.StarFill" Color="IconColor.Warning" Size="IconSize.x5" /></span>
+                        }
+                    </div>
+                    <div>
+                        <span><strong>By user:</strong> @rating.User.FirstName</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">@rating.Comment</p>
+                    <p class="card-text"><strong>Created:</strong> @rating.CreatedAt</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No ratings yet</p>
+    }
+}
 
 @code {
     [Parameter]
     public int EventId { get; set; }
 
     private Event Event;
+    private IEnumerable<Rating>? ratings;
+    private decimal score = 0;
     private bool IsFavorite = false;
     private bool IsRendered = false;
 
@@ -71,6 +109,16 @@ else
 
         if (IsFavorite)
         {
+            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{id}");
+            ratings = await RatingRepository.GetAllRatingsForEventAsync(id);
+
+            if(ratings != null && ratings.Any())
+            {
+                foreach(var rating in ratings)
+                {
+                    score += rating.Score;
+                }
+            }
             favorites.Remove(EventId);
         }
         else

@@ -1,0 +1,47 @@
+﻿@page "/profilepage/{UserId:int}/posted-events"
+@using ForgeEventApp.Components.Layout
+@inject IEventRepository EventRepository
+@layout ProfilePageLayout
+
+<PageTitle>Your events</PageTitle>
+
+<h3 class="text-center">Posted Events</h3>
+
+@if (events is null || !events.Any())
+{
+    <p>You have no posted events</p>
+}
+else
+{
+    <p class="text-center">Your events:</p>
+
+    @foreach (var postedEvent in events)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="col-3 p-1" style="width: 30%">
+                <div class="card h-100">
+                    <a href="@($"/event-details/{postedEvent.Id}")" style="text-decoration: none; color: inherit;">
+                        <img src="/images/EventImages/@postedEvent.ImageUrl" class="img-fluid card-img-top" alt="@postedEvent.Name" />
+                        <div class="card-body">
+                            <h5 class="card-title">@postedEvent.Name</h5>
+                            <p class="card-text">@postedEvent.Date.ToString("dddd, dd MMMM yyyy")</p>
+                            <hr />
+                            <p class="card-text"><b>Published:</b> @postedEvent.CreatedAt.ToString("dd MMMM yyyy, kl: HH:MM")</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private IEnumerable<Event>? events;
+    [Parameter]
+    public int UserId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        events = await EventRepository.GetAllEventsPostedByUserAsync(UserId);
+    }
+}

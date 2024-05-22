@@ -1,20 +1,18 @@
-﻿@page "/"
+﻿@page "/search/{Category?}/{SearchString?}"
 @inject HttpClient HttpClient
 
-<PageTitle>Home</PageTitle>
-
-<h1>Forge<br />Event</h1>
+<h3>SearchEventPage</h3>
 
 <div class="container d-flex flex-column">
-	@if (events is null)
+	@if (EventSearch is null)
 	{
 		<p>Loading...</p>
 	}
 	else
 	{
-		@foreach(var item in events) 
+		@foreach (var item in EventSearch)
 		{
-		<div class="d-flex justify-content-center">
+			<div class="d-flex justify-content-center">
 				<div class="col-3 p-1" style="width: 50%">
 					<div class="card h-100">
 						<a href="@($"event-details/{item.Id}")" style="text-decoration: none; color: inherit;">
@@ -22,7 +20,6 @@
 							<div class="card-body">
 								<h5 class="card-title">@item.Name</h5>
 								<p class="card-text">@item.Date.ToString("dddd, dd MMMM yyyy")</p>
-								<p class="card-text">@item.Category</p>
 							</div>
 						</a>
 					</div>
@@ -33,12 +30,16 @@
 </div>
 
 @code {
-	private IEnumerable<Event>? events;
+    private IEnumerable<Event>? EventSearch;
+    
+	[Parameter]
+	public string? Category { get; set; }
 
-	protected override async Task OnInitializedAsync()
-	{
-		events = await HttpClient.GetFromJsonAsync<IEnumerable<Event>>("https://localhost:7206/api/Events/allevents");
-	}
+	[Parameter]
+	public string? SearchString { get; set; }
 
-
+    protected override async Task OnInitializedAsync()
+    {
+		EventSearch = await HttpClient.GetFromJsonAsync<IEnumerable<Event>>($"https://localhost:7206/api/Events/search?category={Category}&searchString={SearchString}");
+    }
 }
