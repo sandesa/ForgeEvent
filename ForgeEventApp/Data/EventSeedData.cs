@@ -56,7 +56,7 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 03),
 						Description = "Experience a variety of cuisines from around the world.",
 						Price = 20.00m,
-                        Category = Category.FoodAndDrinks,
+                        Category = Category.Food_And_Drinks,
                         User = users.FirstOrDefault(u => u.Id == 1)
 					},
 					new()
@@ -82,7 +82,7 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 05),
 						Description = "Marvel at the creativity and talent of local artists.",
 						Price = 15.00m,
-						Category = Category.ArtAndCulture,
+						Category = Category.Art_And_Culture,
 						User = users.FirstOrDefault(u => u.Id == 3)
 					},
 					new()
