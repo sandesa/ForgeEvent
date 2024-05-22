@@ -29,7 +29,7 @@ namespace ForgeEventApp.Repositories
 		public async Task AddRatingAsync(Rating rating, int userId, int eventId)
 		{
 			var user = await _userRepository.GetUserFromIdAsync(userId);
-			var ratingEvent = await _eventRepository.GetEventWithAdminDetailsAsync(eventId);
+			var ratingEvent = await _eventRepository.GetEventFromIdAsync(eventId);
 			rating.User = user;
 			rating.Event = ratingEvent;
 			rating.CreatedAt = DateTime.Now;

@@ -1,0 +1,111 @@
+﻿@page "/profilepage/{UserId:int}/edit-event/{Event:int}"
+@inject IEventRepository EventRepository
+@inject NavigationManager Navigation
+@using ForgeEventApp.Components.Layout
+@layout ProfilePageLayout
+@rendermode InteractiveServer
+
+<PageTitle>Edit event</PageTitle>
+
+<div class="d-flex">
+    <a class="btn btn-secondary" href="/profilepage/@UserId">Back</a>
+    <h3 class="text-center mx-auto">Edit Event</h3>
+</div>
+
+@if (Event is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm method="post" Model="@Event" OnValidSubmit="EditEvent" FormName="EditEventForm" style="width: 900px" class="mx-auto" Enhance="true">
+        <input type="hidden" name="Event.Id" value="@Event.Id" />
+        <input type="hidden" name="Event.ImageUrl" value="@Event.ImageUrl" />
+
+        <div class="form-group row justify-content-center">
+            <label for="address" class="col-sm-2 col-form-label text-right" style="width:154px"><strong>Address:</strong></label>
+            <div class="col-sm-6">
+                <InputText id="address" @bind-Value="Event.Address" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+            <label for="date" class="col-sm-2 col-form-label text-right" style="width:154px"><strong>Event Date:</strong></label>
+            <div class="col-sm-6">
+                <InputDate id="date" @bind-Value="Event.Date" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+            <label for="description" class="col-sm-2 col-form-label text-right" style="width:154px"><strong>Description:</strong></label>
+            <div class="col-sm-6">
+                <InputText id="description" @bind-Value="Event.Description" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+            <label for="price" class="col-sm-2 col-form-label text-right" style="width:154px"><strong>Price:</strong></label>
+            <div class="col-sm-6">
+                <InputNumber id="price" @bind-Value="Event.Price" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row justify-content-center">
+            <label for="ticketAmount" class="col-sm-2 col-form-label text-right" style="width:154px"><strong>Ticket Amount:</strong></label>
+            <div class="col-sm-6">
+                <InputNumber id="ticketAmount" @bind-Value="Event.TicketAmount" class="form-control" />
+            </div>
+        </div>
+
+
+        <div class="form-group row justify-content-center">
+            <label for="category" class="col-sm-2 col-form-label text-right" style="width:154px"><strong>Category:</strong></label>
+            <div class="col-sm-6">
+            <InputSelect @bind-Value="Event.Category" id="category">
+                @foreach (var category in Enum.GetValues(typeof(Category)))
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+        <DataAnnotationsValidator />
+        <ValidationSummary class="text-danger" />
+    </EditForm>
+}
+
+
+@code {
+    [Parameter]
+    public int UserId { get; set; }
+
+    [Parameter]
+    public int EventId{ get; set; }
+
+    [SupplyParameterFromForm]
+    private Event? Event { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Event = await EventRepository.GetEventFromIdAsync(EventId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    private async Task EditEvent()
+    {
+        if (Event is not null)
+        {
+            Event.Id = EventId;
+            await EventRepository.UpdateEventAsync(Event);
+            Navigation.NavigateTo($"/profilepage/{UserId}/admin-event-details/{EventId}");
+        }
+    }
+
+}
+

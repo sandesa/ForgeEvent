@@ -127,5 +127,17 @@ namespace ForgeEventApp.Repositories
 
             return ev?.Price ?? 0;
         }
+
+        public async Task UpdateEventAsync(Event updatedEvent)
+        {
+            _context.Entry(updatedEvent).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Event> GetEventFromIdAsync(int eventId)
+        {
+            var evnt = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventId);
+            return evnt is null ? throw new InvalidOperationException($"Cannot find event with ID {eventId}") : evnt;
+        }
     }
 }
