@@ -20,7 +20,7 @@ else
         <div class="d-flex justify-content-center">
             <div class="col-3 p-1" style="width: 30%">
                 <div class="card h-100">
-                    <a href="@($"/event-details/{postedEvent.Id}")" style="text-decoration: none; color: inherit;">
+                    <a href="@($"/profilepage/{UserId}/admin-event-details/{postedEvent.Id}")" style="text-decoration: none; color: inherit;">
                         <img src="/images/EventImages/@postedEvent.ImageUrl" class="img-fluid card-img-top" alt="@postedEvent.Name" />
                         <div class="card-body">
                             <h5 class="card-title">@postedEvent.Name</h5>

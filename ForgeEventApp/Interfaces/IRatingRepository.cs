@@ -6,6 +6,6 @@ namespace ForgeEventApp.Interfaces
 	{
 		Task<IEnumerable<Rating>> GetAllRatingsForEventAsync(int eventId);
 		Task AddRatingAsync(Rating rating, int userId, int eventId);
-
+		Task<decimal> GetAverageScoreAsync(int eventId);
     }
 }

@@ -36,5 +36,17 @@ namespace ForgeEventApp.Repositories
 			_context.Ratings.Add(rating);
 			await _context.SaveChangesAsync();
 		}
+
+		public async Task<decimal> GetAverageScoreAsync(int eventId)
+		{
+			decimal score = 0;
+			var ratings = await GetAllRatingsForEventAsync(eventId);
+
+			foreach (var rating in ratings)
+			{
+				score += rating.Score;
+			}
+			return score / ratings.Count();
+		}
 	}
 }
