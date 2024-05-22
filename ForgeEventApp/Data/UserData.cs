@@ -22,7 +22,7 @@ namespace ForgeEventApp.Data
                     },
                     new User
                     {
-                        Role = Role.Account,
+                        Role = Role.User,
                         FirstName = "Jane",
                         LastName = "Smith",
                         Email = "jane.smith@example.com",

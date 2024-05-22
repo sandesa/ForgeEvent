@@ -41,14 +41,13 @@
                 <label class="form-label">Role:</label>
                 
                 <div>
-                    <input type="radio" id="admin" name="role" value="Admin" @* checked="@IsRoleChecked(Role.Admin)" *@ @onchange="@(c => User.Role=Role.Admin)" />
-                    <label for="admin">Admin</label>
+                    <InputRadioGroup @bind-Value="User.Role">
+                        <InputRadio @bind-Value="User.Role=Role.Admin" />
+                        <InputRadio @bind-Value="User.Role=Role.User" />
+                    </InputRadioGroup>
+                    <ValidationMessage For="() => User.Role" class="text-danger" />
                 </div>
-                <div>
-                    <input type="radio" id="user" name="role" value="Account" @* checked="@IsRoleChecked(Role.Account)" *@ @onchange="@(c => User.Role=Role.Account)" />
-                    <label for="user">User</label>
-                </div>
-                <ValidationMessage For="() => User.Role" class="text-danger" />
+              
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
             @if (showSuccessMessage)
@@ -60,18 +59,16 @@
         </EditForm>
     </div>
 </div>
-      
-      
+           
 
 @code {
     [SupplyParameterFromForm]
     public User User{ get; set; } = new();
     private bool showSuccessMessage = false;
-
-    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    
     public async Task AddUser()
     {
-        await CREATE.CreateUserAsync(User);
+        await HttpClient.PostAsJsonAsync($"https://localhost:7206/api/User/{User}", User);
 
         await FORMSUCCESS.SubmitFormAsync(() =>
         {
@@ -79,10 +76,6 @@
             FORMSUCCESS.RestValidFormBool();
         });
     }
-    //private bool IsRoleChecked(Role role) 
-    // {
-    //     return User.Role == role;
-    // }
 } 
 
     
