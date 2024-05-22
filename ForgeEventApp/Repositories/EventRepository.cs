@@ -53,17 +53,17 @@ namespace ForgeEventApp.Repositories
 
         public async Task UpdateTicketAmountAsync(int eventId, int newTicketAmount)
         {                      
-            return Task.FromResult(new Dictionary<Category, string>
-            {
-                { (Category)1, "Music" },
-                { (Category)2, "Technology" },
-                { (Category)3, "Food & Drinks" },
-                { (Category)4, "Sports" },
-                { (Category)5, "Art & Culture" },
-                { (Category)6, "Fashion" },
-                { (Category)7, "Comedy" },
-                { (Category)8, "Film" }
-            });
+            //return Task.FromResult(new Dictionary<Category, string>
+            //{
+            //    { (Category)1, "Music" },
+            //    { (Category)2, "Technology" },
+            //    { (Category)3, "Food & Drinks" },
+            //    { (Category)4, "Sports" },
+            //    { (Category)5, "Art & Culture" },
+            //    { (Category)6, "Fashion" },
+            //    { (Category)7, "Comedy" },
+            //    { (Category)8, "Film" }
+            //});
 
             var ev = await _context.Events.FindAsync(eventId);
             if (ev != null)
@@ -93,15 +93,24 @@ namespace ForgeEventApp.Repositories
         {
             var categories = new List<(Category, string)>
             {
-                Category.Music => "Music",
-                Category.Technology => "Technology",
-                Category.FoodAndDrinks => "Food & Drinks",  
-                Category.Sports => "Sports",
-                Category.ArtAndCulture => "Art & Culture",  
-                Category.Fashion => "Fashion",
-                Category.Comedy => "Comedy",
-                Category.Film => "Film",
-                _ => "Unknown"
+
+                //Category.Music => "Music",
+                //Category.Technology => "Technology",
+                //Category.FoodAndDrinks => "Food & Drinks",
+                //Category.Sports => "Sports",
+                //Category.ArtAndCulture => "Art & Culture",
+                //Category.Fashion => "Fashion",
+                //Category.Comedy => "Comedy",
+                //Category.Film => "Film",
+                //_ => "Unknown"
+                ((Category)1, "Music"),
+                ((Category)2, "Technology"),
+                ((Category)3, "Food & Drinks"),
+                ((Category)4, "Sports"),
+                ((Category)5, "Art & Culture"),
+                ((Category)6, "Fashion"),
+                ((Category)7, "Comedy"),
+                ((Category)8, "Film")
             };
 
             return await Task.FromResult(categories.AsEnumerable());
