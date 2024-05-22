@@ -1,4 +1,4 @@
-﻿@page "/profilepage/{UserId:int}/edit-event/{Event:int}"
+﻿@page "/profilepage/{UserId:int}/edit-event/{EventId:int}"
 @inject IEventRepository EventRepository
 @inject NavigationManager Navigation
 @using ForgeEventApp.Components.Layout
@@ -18,9 +18,9 @@
 }
 else
 {
-    <EditForm method="post" Model="@Event" OnValidSubmit="EditEvent" FormName="EditEventForm" style="width: 900px" class="mx-auto" Enhance="true">
-        <input type="hidden" name="Event.Id" value="@Event.Id" />
-        <input type="hidden" name="Event.ImageUrl" value="@Event.ImageUrl" />
+    <EditForm Model="@Event" OnValidSubmit="EditEvent" class="mx-auto" style="width: 900px">
+        <input type="hidden" value="@Event.Id" />
+        <input type="hidden" value="@Event.ImageUrl" />
 
         <div class="form-group row justify-content-center">
             <label for="address" class="col-sm-2 col-form-label text-right" style="width:154px"><strong>Address:</strong></label>
@@ -60,7 +60,7 @@ else
         <div class="form-group row justify-content-center">
             <label for="category" class="col-sm-2 col-form-label text-right" style="width:154px"><strong>Category:</strong></label>
             <div class="col-sm-6">
-            <InputSelect @bind-Value="Event.Category" id="category">
+                <InputSelect id="category" @bind-Value="Event.Category" class="form-control">
                 @foreach (var category in Enum.GetValues(typeof(Category)))
                     {
                         <option value="@category">@category</option>
