@@ -31,13 +31,36 @@ namespace ForgeEventApp.Controllers
 		}
 
 		[HttpGet("categories")]
-		public async Task<ActionResult<string>> GetCategories()
+		public async Task<ActionResult<IEnumerable<string>>> GetCategoriesDisplay()
 		{
-			Dictionary<Category, string> categoryDictionary = await _eventRepository.GetCategoryAsync();
-			IEnumerable<string> displayNames = categoryDictionary.Values;
-			return Ok(displayNames);
+			IEnumerable<(Category, string)> categories = await _eventRepository.GetCategoryAsync();
+
+			IEnumerable<string> categoryDisplay = categories.Select(c => c.Item2);
+
+			return Ok(categoryDisplay);
 		}
-		[HttpGet("{id}")]
+		[HttpGet("enums")]
+        public async Task<ActionResult<IEnumerable<string>>> GetCategoriesEnum()
+        {
+            IEnumerable<(Category, string)> categories = await _eventRepository.GetCategoryAsync();
+
+            IEnumerable<Category> categoryDisplay = categories.Select(c => c.Item1);
+
+            return Ok(categoryDisplay);
+        }
+        [HttpGet("select/{category}")]
+        public async Task<ActionResult<Category>> GetCategories(string category)
+        {
+            IEnumerable<(Category, string)> categories = await _eventRepository.GetCategoryAsync();
+
+			var findCategory = categories.FirstOrDefault(c => c.Item2 == category);
+
+			Category categoryDisplay = findCategory.Item1;
+
+            return Ok(categoryDisplay);
+        }
+
+        [HttpGet("{id}")]
 		public async Task<ActionResult<Event>> GetEventDetails(int id)
 		{
 			var eventDetatils = await _eventRepository.GetEventWithAdminDetailsAsync(id);
@@ -45,10 +68,20 @@ namespace ForgeEventApp.Controllers
 			return Ok(eventDetatils);
 		}
 
+		[HttpGet("search")]
+		public async Task<ActionResult<IEnumerable<Event>>> EventSearch([FromQuery] Category category, [FromQuery] string? searchString)
+		{
+			var searchEvent = await _eventRepository.SearchEventAsync(category, searchString);
+
+			return Ok(searchEvent);
+		}
+
 		[HttpPost("{events}")]
-        public async Task CreateEvent(Event events)
+        public async Task<ActionResult<Event>> CreateEvent(Event events)
         {
             await _eventRepository.CreateEventAsync(events);
+
+			return CreatedAtAction(nameof(GetEventDetails), new { id = events.Id }, events);
         }
     }
 }
