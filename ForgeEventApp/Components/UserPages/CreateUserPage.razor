@@ -1,9 +1,10 @@
 ﻿@page "/createuserpage"
-@inject ForgeEventApp.Interfaces.IUserRepository CREATE
+@inject HttpClient HttpClient
 @inject ForgeEventApp.Interfaces.IValidations FORMSUCCESS
 @using ForgeEventApp.Functions
 @using ForgeEventApp.Models
 @attribute [StreamRendering]
+
 
 <h3>CreateUserPage</h3>
 <div class="row">
