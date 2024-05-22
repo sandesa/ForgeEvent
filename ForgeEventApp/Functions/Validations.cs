@@ -1,5 +1,7 @@
 ﻿using ForgeEventApp.Interfaces;
+using ForgeEventApp.Models;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 
@@ -13,7 +15,6 @@ public class Validations : IValidations
     public Validations(IEventRepository eventRepository)
     {
         _eventRepository = eventRepository;
-        
     }
 
     private bool formValid = false;
@@ -40,17 +41,28 @@ public class Validations : IValidations
         formValid = false;
     }
 
-    public async Task<bool> ValidateTicketAmountLeft(int ticketAmount, int id)
-    {
-        int amount = ticketAmount;
-        int eventId = id;
-        int ticketAmountLeft = await _eventRepository.GetTicketAmountAsync(eventId);
 
-        if (ticketAmountLeft > amount)
+    public string DisplayCategory(object category)
+    {
+        string changed = "";
+
+        foreach(char c in category.ToString())
         {
-            return false;
+            if (c == '_')
+            {
+                changed += " ";
+            }
+            else
+            {
+                changed += c;
+            }
         }
 
-        return true;
+        return changed;
+    }
+
+    public async Task<bool> ValidateTicketAmountLeft(int ticketAmount, int id)
+    {
+        return ticketAmount > 0;
     }
 }

@@ -1,0 +1,39 @@
+﻿@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject IValidations ValidDisplay
+
+<EditForm method="post" Model="SearchRequest" OnValidSubmit="Search" FormName="search" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="container text-center">
+    <div class="row align-items-center">
+    <div class="col">
+        <InputSelect class="form-select" @bind-Value="SearchRequest.Category">
+            <option value="">Select an option</option>
+            @foreach (var category in Enum.GetValues(typeof(Category)))
+            {
+                   <option value="@((int)category)">@ValidDisplay.DisplayCategory(category)</option>
+            }
+        </InputSelect>
+    
+    </div>
+    <div class="col">
+                <InputText id="name" @bind-Value="SearchRequest.SearchString" class="form-control" />
+            </div>
+    <div class="col">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    [SupplyParameterFromForm]
+    private SearchRequest SearchRequest { get; set; } = new();
+
+    public async Task Search()
+    {
+        NavigationManager.NavigateTo($"/search/{SearchRequest.Category}/{SearchRequest.SearchString}");
+    }
+}

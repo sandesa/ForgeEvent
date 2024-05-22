@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Diagnostics;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace ForgeEventApp.Models
 {
     public enum Category
@@ -42,7 +41,7 @@ namespace ForgeEventApp.Models
         [Range(1, 9999, ErrorMessage = "Ticket price must be at least 1")]
         public decimal Price { get; set; }
 
-		[Required(ErrorMessage = "required event category")] 
+		//[Required(ErrorMessage = "required event category")] 
 		public Category Category { get; set; }
 
 		//[Required(ErrorMessage = "euerror")]

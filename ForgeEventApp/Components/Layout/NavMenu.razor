@@ -1,4 +1,4 @@
-﻿<nav class="navbar bg-dark navbar-expand-lg " data-bs-theme="dark">
+﻿<nav class="navbar bg-dark navbar-expand-lg " data-bs-theme="dark" id="navbar">
     <div class="container-fluid">
         <div class="collapse navbar-collapse d-flex" id="navbarSupportedContent">
             <a class="mx-5" href="#" style="text-decoration: none; color: goldenrod;">Forge<br />Event</a>
@@ -10,13 +10,13 @@
                     <a class="nav-link" href="/createuserpage">Create account</a>
                     </li>
                 <li class="">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="/search">Link</a>
                 </li>
 
                 <li class="">
                     <a class="nav-link" href="/createeventpage">Create Event</a>
                 </li>
-                <li class="nav-item">
+                <li class="">
                     <a class="nav-link" href="/profilepage/1">Profile</a>
                 </li>
                 <li class="dropdown">
@@ -31,10 +31,9 @@
                        </Dropdown>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            <div class="card text-center">
+                <SearchFormForNavMenu />
+            </div>
             <a class="nav-link" id="nav-user" href="/Login"><Icon Name="IconName.PersonCircle" Style="font-size: 1.5rem"></Icon></a>
         </div>
     </div>

@@ -7,44 +7,45 @@
 @attribute [StreamRendering]
 
 <h3>CreateUserPage</h3>
-       <form @* @onsubmit="CreateUser" *@> 
-      <div class="mb-3 row">
-        <label for="inputFirstName" class="col-sm-2 col-form-label">First name</label>
-        <div class="col-sm-10">
-          <input type="text" @bind="user.FirstName" class="form-control" id="inputFirstName">
+    <form @* @onsubmit="CreateUser" *@> 
+        <div class="mb-3 row">
+             <label for="inputFirstName" class="col-sm-2 col-form-label">First name</label>
+             <div class="col-sm-10">
+               <input type="text" @bind="user.FirstName" class="form-control" id="inputFirstName">
+             </div>
+             <label for="inputLastName" class="col-sm-2 col-form-label">Last name</label>
+             <div class="col-sm-10">
+                 <input type="text" @bind="user.LastName" class="form-control" id="inputLastName">
+             </div>
+             <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+             <div class="col-sm-10">
+                 <input type="email" @bind="user.Email" class="form-control" id="inputEmail">
+             </div>
+             <label for="inputPhoneNumber" class="col-sm-2 col-form-label">Phonenumber</label>
+             <div class="col-sm-10">
+                 <input type="tel" @bind="user.PhoneNumber" class=" form-control" id="inputPhoneNumber">
+             </div>
+             <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+             <div class="col-sm-10">
+                 <input type="password" @bind="user.Password" class=" form-control" id="inputPassword">
+             </div>
+             <div class="d-flex flex-column justify-content-center align-items-center">
+                  <div class="form-check">
+                      <input class="form-check-input" value="User" checked="@user.Role==Role.User" @onchange="() => { user.Role = Role.User; }" type="radio" name="role" id="user">
+                      <label class="form-check-label" for="user">
+                          User
+                      </label>
+                  </div>
+                  <div class="form-check">
+                      <input class="form-check-input"  value="Admin" checked="@user.Role==Role.Admin" @onchange="() => { user.Role = Role.Admin; }" type="radio" name="role" id="admin">
+                      <label class="form-check-label" for="admin">
+                          Admin
+                      </label>
+                  </div>
+             </div>
         </div>
-        <label for="inputLastName" class="col-sm-2 col-form-label">Last name</label>
-        <div class="col-sm-10">
-            <input type="text" @bind="user.LastName" class=" form-control" id="inputLastName">
-        </div>
-        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-        <div class="col-sm-10">
-            <input type="email" @bind="user.Email" class=" form-control" id="inputEmail">
-        </div>
-        <label for="inputPhoneNumber" class="col-sm-2 col-form-label">Phonenumber</label>
-        <div class="col-sm-10">
-            <input type="tel" @bind="user.PhoneNumber" class=" form-control" id="inputPhoneNumber">
-        </div>
-        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-10">
-            <input type="password" @bind="user.Password" class=" form-control" id="inputPassword">
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" value="User" checked="@user.Role==Role.User" @onchange="() => { user.Role = Role.User; }" type="radio" name="role" id="user">
-            <label class="form-check-label" for="user">
-                User
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input"  value="Admin" checked="@user.Role==Role.Admin" @onchange="() => { user.Role = Role.Admin; }" type="radio" name="role" id="admin">
-            <label class="form-check-label" for="admin">
-                Admin
-            </label>
-        </div>
-        </div>
-       <button type="submit" class="btn btn-primary">Submit</button>
-
-      </form>
+    <button type="submit" class="btn btn-primary">Submit</button
+    </form>
 
 @code {
     private User user = new User();
@@ -52,7 +53,7 @@
     [Inject]
     private IUserRepository UserRepository { get; set; }
 
-  //  private async Task CreateUser() => await HttpClient.PostAsJsonAsync("/api/User", user); 
+    // private async Task CreateUser() => await HttpClient.PostAsJsonAsync("/api/User", user); 
 }
 
     
