@@ -94,7 +94,7 @@ else
 
             if(ratings != null && ratings.Any())
             {
-                score = await RatingRepository.GetAverageScoreAsync(id);
+                score = await RatingRepository.GetAverageScoreAsync(EventId);
             }
     }
 
