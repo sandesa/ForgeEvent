@@ -9,8 +9,10 @@
 @rendermode InteractiveServer
 
 <PageTitle>Profile Page</PageTitle>
-
-<h3 class="text-center">Your profile</h3>
+<div class="d-flex">
+    <a class="btn btn-secondary" href="/profilepage/@UserId/edit">Edit</a>
+    <h3 class="text-center mx-auto">Your profile</h3>
+</div>
 <div class="page">
     <div class="content px-4">
         @if (profile == null)
