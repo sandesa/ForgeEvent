@@ -60,20 +60,6 @@ namespace ForgeEventApp.Repositories
 
             return query;
         }
-        //public Task<Dictionary<Category, string>> GetCategoryAsync()
-        //{
-        //    return Task.FromResult(new Dictionary<Category, string>
-        //    {
-        //        { (Category)1, "Music" },
-        //        { (Category)2, "Technology" },
-        //        { (Category)3, "Food & Drinks" },
-        //        { (Category)4, "Sports" },
-        //        { (Category)5, "Art & Culture" },
-        //        { (Category)6, "Fashion" },
-        //        { (Category)7, "Comedy" },
-        //        { (Category)8, "Film" }
-        //    });
-        //}
 
         public async Task<IEnumerable<(Category, string)>> GetCategoryAsync()
         {
@@ -90,37 +76,6 @@ namespace ForgeEventApp.Repositories
             };
 
             return await Task.FromResult(categories.AsEnumerable());
-        }
-
-        private async Task<Category> GetCategoryFromDisplayName(string displayName)
-        {
-            return displayName switch
-            {
-                "Music" => (Category)1,
-                "Technology" => (Category)2,
-                "Food & Drinks" => (Category)3,
-                "Sports" => (Category)4,
-                "Art & Culture" => (Category)5,
-                "Fashion" => (Category)6,
-                "Comedy" => (Category)7,
-                "Film" => (Category)8
-            };
-        }
-
-        private async Task<string> GetDisplayName(Category category)
-        {
-            return category switch
-            {
-                (Category)1 => "Music",
-                (Category)2 => "Technology",
-                (Category)3 => "Food & Drinks",
-                (Category)4 => "Sports",
-                (Category)5 => "Art & Culture",
-                (Category)6 => "Fashion",
-                (Category)7 => "Comedy",
-                (Category)8 => "Film",
-                _ => "Unknown"
-            };
         }
         public async Task<int> GetTicketAmountAsync(int id)
         {
