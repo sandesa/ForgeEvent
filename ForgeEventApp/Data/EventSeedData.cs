@@ -14,7 +14,10 @@ namespace ForgeEventApp.Data
 		public static async Task InitializeAsync(AppDbContext context)
 		{
 			if (!context.Events.Any())
-			{						
+			{
+
+
+				//Category[] categories = new CategoriesClient().GetCategories;
 				await UserData.InitializeAsync(context);
 				var users = await context.Users.ToListAsync();
 
@@ -30,8 +33,8 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024,05,01),
 						Description = "Join us for a day of live music, food, and fun!",
 						Price = 25.00m,
-                        Category = Category.Music,
-                        User = users.FirstOrDefault(u => u.Id == 1)
+						//Category = categories[0].Name,
+						User = users.FirstOrDefault(u => u.Id == 1)
 					},
 					new()
 					{
@@ -43,8 +46,8 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024,05,02),
 						Description = "Explore the latest trends and innovations in technology.",
 						Price = 50.00m,
-                        Category = Category.Technology,
-                        User = users.FirstOrDefault(u => u.Id == 1)
+						//Category = categories[1].Name,
+						User = users.FirstOrDefault(u => u.Id == 1)
 					},
 					new()
 					{
@@ -56,8 +59,8 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 03),
 						Description = "Experience a variety of cuisines from around the world.",
 						Price = 20.00m,
-                        Category = Category.FoodAndDrinks,
-                        User = users.FirstOrDefault(u => u.Id == 1)
+						//Category = categories[2].Name,
+						User = users.FirstOrDefault(u => u.Id == 1)
 					},
 					new()
 					{
@@ -69,8 +72,8 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 04),
 						Description = "Compete or cheer on your favorite teams in various sports.",
 						Price = 10.00m,
-                        Category = Category.Sports,
-                        User = users.FirstOrDefault(u => u.Id == 3)
+						//Category = categories[3].Name,
+						User = users.FirstOrDefault(u => u.Id == 3)
 					},
 					new()
 					{
@@ -82,7 +85,7 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 05),
 						Description = "Marvel at the creativity and talent of local artists.",
 						Price = 15.00m,
-						Category = Category.ArtAndCulture,
+						//Category = categories[4].Name,
 						User = users.FirstOrDefault(u => u.Id == 3)
 					},
 					new()
@@ -95,7 +98,7 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 06),
 						Description = "Join us for an intense workout session led by professional trainers. Suitable for all fitness levels.",
 						Price = 15.00m,
-						Category = Category.Sports,
+						//Category = categories[3].Name,
 						User = users.FirstOrDefault(u => u.Id == 3)
 					},
 					new()
@@ -108,7 +111,7 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 07),
 						Description = "Discover new films and meet filmmakers from around the world.",
 						Price = 30.00m,
-						Category = Category.Film,
+						//Category = categories[7].Name,
 						User = users.FirstOrDefault(u => u.Id == 1)
 					},
 					new()
@@ -121,7 +124,7 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 08),
 						Description = "Witness the latest trends and designs on the runway.",
 						Price = 40.00m,
-						Category = Category.Fashion,
+						//Category = categories[5].Name,
 						User = users.FirstOrDefault(u => u.Id == 1)
 					},
 					new()
@@ -134,7 +137,7 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 09),
 						Description = "Explore fascinating experiments and innovations in science.",
 						Price = 10.00m,
-						Category = Category.Technology,
+						//Category = categories[1].Name,
 						User = users.FirstOrDefault(u => u.Id == 3)
 					},
 					new()
@@ -147,7 +150,7 @@ namespace ForgeEventApp.Data
 						CreatedAt = new DateTime(2024, 05, 10),
 						Description = "Laugh the night away with hilarious stand-up performances.",
 						Price = 20.00m,
-						Category = Category.Comedy,
+						//Category = categories[6].Name,
 						User = users.FirstOrDefault(u => u.Id == 1)
 
 					}

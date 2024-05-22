@@ -66,7 +66,7 @@ namespace ForgeEventApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Category")
+                    b.Property<int>("Category")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
