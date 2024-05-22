@@ -6,7 +6,7 @@ namespace ForgeEventApp.Interfaces
 	public interface IUserRepository
 	{
 		Task CreateUserAsync(User user);
-		Task<User> GetUserFromIdAsync(int id);
-
+        Task<User> GetUserFromIdAsync(int id);
+		Task UpdateUserAsync(User user);
     }
 }

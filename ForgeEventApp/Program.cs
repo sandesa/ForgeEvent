@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
 using ForgeEventApp.Functions;
 using Microsoft.AspNetCore.Components.Forms;
+using ForgeEventApp.Services;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,9 +23,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 
+builder.Services.AddBlazoredLocalStorage();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IValidations, Validations>();
+builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

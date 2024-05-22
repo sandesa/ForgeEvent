@@ -33,9 +33,16 @@ namespace ForgeEventApp.Repositories
 
 		public async Task<User> GetUserFromIdAsync(int id)
 		{
-			var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
 			return user is null ? throw new InvalidOperationException("Cannot find user") : user;
 		}
-	}
+
+        public async Task UpdateUserAsync(User user)
+        {
+			user.Salt = "salt_random";
+			_context.Entry(user).State = EntityState.Modified;
+			await _context.SaveChangesAsync();
+        }
+    }
 }

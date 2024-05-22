@@ -1,0 +1,54 @@
+﻿@page "/profilepage/{UserId:int}"
+@using ForgeEventApp.Components.Layout
+@using ForgeEventApp.Interfaces
+@using ForgeEventApp.Models
+@inject HttpClient httpClient
+@inject IBookingService IBookingService
+@layout ProfilePageLayout
+
+<PageTitle>Profile Page</PageTitle>
+<div class="d-flex">
+    <a class="btn btn-secondary" href="/profilepage/@UserId/edit">Edit</a>
+    <h3 class="text-center mx-auto">Your profile</h3>
+</div>
+<div class="page">
+    <div class="content px-4">
+        @if (profile == null)
+        {
+            <p>Loading...</p>
+        }
+        else
+        {
+            <table class="table table-striped mx-auto" style="width: 500px">
+                <tbody>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>@profile.FirstName @profile.LastName</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td>@profile.Email</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Phone number</th>
+                        <td>@profile.PhoneNumber</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@code {
+    private User? profile;
+    private IEnumerable<Booking>? bookings;
+
+    [Parameter]
+    public int UserId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        profile = await httpClient.GetFromJsonAsync<User>($"https://localhost:7206/api/Users/{UserId}");
+        bookings = await IBookingService.GetAllBookingsByUserIdAsync(UserId);
+    }
+}

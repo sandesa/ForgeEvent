@@ -1,0 +1,47 @@
+﻿@inherits LayoutComponentBase
+
+<CascadingValue Value="UserId">
+    <div class="d-flex flex-column vh-100">
+        <div class="fixed-top">
+            <NavMenu />
+        </div>
+        <div class="d-flex flex-row flex-grow-1">
+            <div class="sidebar">
+                <NavbarProfilePage UserId="@(UserId = 1)" />
+            </div>
+            <main class="content flex-grow-1 overflow-auto px-4" style="margin-top: 80px; height: auto;">
+                <article class="content-body">
+                    @Body
+                </article>
+            </main>
+        </div>
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public int UserId { get; set; }
+}
+
+<style>
+    .sidebar {
+        width: 250px;
+        background: linear-gradient(180deg, rgba(33,37,41,1) 38%, rgba(107,42,26,1) 100%);
+        padding: 15px;
+        position: sticky;
+        top: 56px;
+        height: calc(100vh - 56px);
+        overflow-y: auto;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .content-body {
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+</style>
