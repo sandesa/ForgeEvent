@@ -1,4 +1,4 @@
-﻿@page "/event-details/{eventId}"
+﻿@page "/event-details/{eventId:int}"
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
 @inject ILocalStorageService LocalStorage
@@ -42,42 +42,46 @@ else
 
 @code {
     [Parameter]
-    public string EventId { get; set; }
+    public int EventId { get; set; }
 
     private Event Event;
     private bool IsFavorite = false;
-
+    private bool IsRendered = false;
 
     protected override async Task OnInitializedAsync()
     {
-        if (int.TryParse(EventId, out int id))
+        Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
         {
-            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{id}");
+            IsFavorite = await IsEventFavorite(EventId);
+            IsRendered = true;
+            StateHasChanged(); 
+        }
+    }
+
+    private async Task ToggleFavorite()
+    {
+        if (!IsRendered) return; 
+
+        var favorites = await LocalStorage.GetItemAsync<List<int>>("favoriteEvents") ?? new List<int>();
+
+        if (IsFavorite)
+        {
+            favorites.Remove(EventId);
         }
         else
         {
-            //error page 
+            favorites.Add(EventId);
         }
-    }
-    private async Task ToggleFavorite()
-    {
-        if (int.TryParse(EventId, out int id))
-        {
-            var favorites = await LocalStorage.GetItemAsync<List<int>>("favoriteEvents") ?? new List<int>();
 
-            if (IsFavorite)
-            {
-                favorites.Remove(id);
-            }
-            else
-            {
-                favorites.Add(id);
-            }
-
-            await LocalStorage.SetItemAsync("favoriteEvents", favorites);
-            IsFavorite = !IsFavorite;
-        }
+        await LocalStorage.SetItemAsync("favoriteEvents", favorites);
+        IsFavorite = !IsFavorite;
     }
+
     private async Task<bool> IsEventFavorite(int eventId)
     {
         var favorites = await LocalStorage.GetItemAsync<List<int>>("favoriteEvents") ?? new List<int>();
