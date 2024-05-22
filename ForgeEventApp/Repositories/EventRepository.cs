@@ -30,7 +30,7 @@ namespace ForgeEventApp.Repositories
                 Name = events.Name,
                 Address = events.Address,
                 Description = events.Description,
-                //Category = events.Category,
+                Category = events.Category,
                 Price = events.Price,
                 TicketAmount = events.TicketAmount,
                 Date = events.Date,
@@ -64,7 +64,7 @@ namespace ForgeEventApp.Repositories
         {
             IEnumerable<Event> query = await GetAllEventsAsync();
 
-            if (category != 0)
+            if (category != (Category)9)
             {
                 query = query.Where(e => e.Category == category);
             }
