@@ -1,6 +1,7 @@
 ﻿@page "/createeventpage"
 @inject HttpClient HttpClient
 @inject ForgeEventApp.Interfaces.IValidations FORMSUCCESS
+@inject IValidations ValidDisplay
 
 <PageTitle>Create</PageTitle>
 
@@ -56,7 +57,7 @@
                   <InputSelect id="category" @bind-Value="newEvent.Category" class="form-control">
                         @foreach (var category in Enum.GetValues(typeof(Category)))
                         {
-                            <option value="@category">@category</option>
+                        <option value="@category">@ValidDisplay.DisplayCategory(category)</option>
                         }
                     </InputSelect>
                     <ValidationMessage For="() => newEvent.Category" class="text-danger" />

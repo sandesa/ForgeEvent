@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject HttpClient HttpClient
+@inject IValidations ValidDisplay
 
 <PageTitle>Home</PageTitle>
 
@@ -22,7 +23,7 @@
 							<div class="card-body">
 								<h5 class="card-title">@item.Name</h5>
 								<p class="card-text">@item.Date.ToString("dddd, dd MMMM yyyy")</p>
-								<p class="card-text">@item.Category</p>
+								<p class="card-text">@ValidDisplay.DisplayCategory(item.Category)</p>
 							</div>
 						</a>
 					</div>
