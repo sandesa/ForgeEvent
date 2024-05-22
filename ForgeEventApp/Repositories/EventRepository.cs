@@ -40,10 +40,6 @@ namespace ForgeEventApp.Repositories
             await _context.Events.AddAsync(newEvent);
             await _context.SaveChangesAsync();
         }
-        public async Task<IEnumerable<Event>> GetAllEventsAsync()
-        {
-            return await _context.Events.Select(e => e).ToListAsync();
-        }
 
         public async Task<Event> GetEventWithAdminDetailsAsync(int eventId)
         {

@@ -16,7 +16,7 @@ namespace ForgeEventApp.Models
 
         public Event Event { get; set; }
 
-		    //[Required(ErrorMessage = "required must be signed in to rate")]
-		    public User User { get; set; }
+		//[Required(ErrorMessage = "required must be signed in to rate")]
+		public User User { get; set; }
     }
 }

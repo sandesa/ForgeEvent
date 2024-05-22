@@ -60,7 +60,7 @@ else
     {
         _errorMessage = string.Empty;
 
-        if (!await Validations.ValidateTicketAmount(_ticketAmount))
+        if (!await Validations.ValidateTicketAmountLeft(_ticketAmount, EventId))
         {
             _errorMessage = "Invalid ticket amount.";
             return;
