@@ -88,17 +88,17 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-            Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
+        Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
 
-            ratings = await HttpClient.GetFromJsonAsync<IEnumerable<Rating>>($"https://localhost:7206/api/Ratings/{EventId}");
+        ratings = await HttpClient.GetFromJsonAsync<IEnumerable<Rating>>($"https://localhost:7206/api/Ratings/{EventId}");
 
-            if(ratings != null && ratings.Any())
+        if(ratings != null && ratings.Any())
+        {
+            foreach(var rating in ratings)
             {
-                foreach(var rating in ratings)
-                {
-                    score += rating.Score;
-                }
+                score += rating.Score;
             }
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
