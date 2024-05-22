@@ -1,6 +1,7 @@
 ﻿using ForgeEventApp.Data;
 using ForgeEventApp.Interfaces;
 using ForgeEventApp.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace ForgeEventApp.Repositories
@@ -13,7 +14,6 @@ namespace ForgeEventApp.Repositories
         {
             _context = context;
         }
-
         public async Task<IEnumerable<Event>> GetAllEventsAsync()
         {
             return await _context.Events.Select(e => e).ToListAsync();
@@ -30,7 +30,7 @@ namespace ForgeEventApp.Repositories
                 Name = events.Name,
                 Address = events.Address,
                 Description = events.Description,
-                //Category = events.Category,
+                Category = events.Category,
                 Price = events.Price,
                 TicketAmount = events.TicketAmount,
                 Date = events.Date,
@@ -52,7 +52,19 @@ namespace ForgeEventApp.Repositories
         }
 
         public async Task UpdateTicketAmountAsync(int eventId, int newTicketAmount)
-        {
+        {                      
+            //return Task.FromResult(new Dictionary<Category, string>
+            //{
+            //    { (Category)1, "Music" },
+            //    { (Category)2, "Technology" },
+            //    { (Category)3, "Food & Drinks" },
+            //    { (Category)4, "Sports" },
+            //    { (Category)5, "Art & Culture" },
+            //    { (Category)6, "Fashion" },
+            //    { (Category)7, "Comedy" },
+            //    { (Category)8, "Film" }
+            //});
+
             var ev = await _context.Events.FindAsync(eventId);
             if (ev != null)
             {
@@ -64,7 +76,7 @@ namespace ForgeEventApp.Repositories
         {
             IEnumerable<Event> query = await GetAllEventsAsync();
 
-            if (category != 0)
+            if (category != (Category)9)
             {
                 query = query.Where(e => e.Category == category);
             }
@@ -81,6 +93,16 @@ namespace ForgeEventApp.Repositories
         {
             var categories = new List<(Category, string)>
             {
+
+                //Category.Music => "Music",
+                //Category.Technology => "Technology",
+                //Category.FoodAndDrinks => "Food & Drinks",
+                //Category.Sports => "Sports",
+                //Category.ArtAndCulture => "Art & Culture",
+                //Category.Fashion => "Fashion",
+                //Category.Comedy => "Comedy",
+                //Category.Film => "Film",
+                //_ => "Unknown"
                 ((Category)1, "Music"),
                 ((Category)2, "Technology"),
                 ((Category)3, "Food & Drinks"),
@@ -99,14 +121,11 @@ namespace ForgeEventApp.Repositories
 
             return ev?.TicketAmount ?? 0;
         }
-
         public async Task<decimal> GetTicketPriceAsync(int id)
         {
             Event ev = await _context.Events.FindAsync(id);
 
             return ev?.Price ?? 0;
         }
-
-
     }
 }

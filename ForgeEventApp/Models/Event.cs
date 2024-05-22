@@ -13,7 +13,8 @@ namespace ForgeEventApp.Models
         Art_And_Culture,
         Fashion,
         Comedy,
-        Film
+        Film,
+        All_Category
     }
     public class Event
     {

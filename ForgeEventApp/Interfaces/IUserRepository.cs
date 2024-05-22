@@ -7,5 +7,6 @@ namespace ForgeEventApp.Interfaces
 	{
 		Task CreateUserAsync(User user);
         Task<User> GetUserFromIdAsync(int id);
+		Task UpdateUserAsync(User user);
     }
 }
