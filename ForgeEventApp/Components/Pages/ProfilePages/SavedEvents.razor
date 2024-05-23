@@ -8,14 +8,15 @@
 
 <PageTitle>Saved Events</PageTitle>
 
-<h3>Saved Events</h3>
+<h3 class="text-center">Saved Events</h3>
+
 @if (favoriteEvents == null)
 {
     <p>Loading favorite events...</p>
 }
 else if (!favoriteEvents.Any())
 {
-    <p>No favorite events found.</p>
+    <p class="text-center">No favorite events found.</p>
 }
 else
 {
@@ -31,7 +32,7 @@ else
                                 <h5 class="card-title">@eventItem.Name</h5>
                                 <p class="card-text">@eventItem.Date.ToString("dddd, dd MMMM yyyy")</p>
                                 <hr />
-                                <p class="card-text"><b>Ticket Price:</b> @eventItem.Price</p>
+                                <p class="card-text"><b>Ticket Price:</b> @eventItem.Price $</p>
                             </div>
                         </a>
                     </div>

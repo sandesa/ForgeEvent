@@ -3,6 +3,7 @@
 @inject NavigationManager Navigation
 @using ForgeEventApp.Components.Layout
 @layout ProfilePageLayout
+@rendermode InteractiveServer
 
 <PageTitle>Edit</PageTitle>
 
@@ -17,7 +18,7 @@
 }
 else
 {
-    <EditForm method="post" Model="profile" OnValidSubmit="EditUser" FormName="EditUserForm" style="width: 900px" class="mx-auto" Enhance="true">
+    <EditForm Model="@profile" OnValidSubmit="EditUser" FormName="EditUserForm" style="width: 900px" class="mx-auto" Enhance="true">
         <input type="hidden" name="User.Id" value="@profile.Id"/>
         <div class="form-group row justify-content-center">
             <label for="firstName" class="col-sm-2 col-form-label text-right" style="width:154px"><strong>First name:</strong></label>
