@@ -17,8 +17,8 @@ else
 {
     <div style="d-flex">
         <div style="">
-            <h1 class="text-center" style="width: 50%">@Event.Name</h1>
-            <img src="/images/EventImages/@Event.ImageUrl" class="img-fluid" alt="@Event.Name" style="width: 50%" />
+            <h1 class="text-center" style="width: auto">@Event.Name</h1>
+            <img src="/images/EventImages/@Event.ImageUrl" class="img-fluid" alt="@Event.Name" style="width: auto" />
         </div>
         <div class="d-flex">
             <div>
@@ -32,7 +32,7 @@ else
                 <p><strong>Phone:</strong> @Event.User.PhoneNumber</p>
                 <p><strong>Email:</strong> @Event.User.Email</p>
             </div>
-            <div class="mx-4 my-4">
+            <div class="mx-auto my-4">
                 @if(NewRating is null)
                 {
                     <p>Loading...</p>

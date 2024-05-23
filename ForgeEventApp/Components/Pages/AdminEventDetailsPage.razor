@@ -16,7 +16,7 @@
 else
 {
     <div class="d-flex">
-        <div style="">
+        <div style="width: 70%">
             <div style="">
                 <h1 class="text-center" style="width:auto">@Event.Name</h1>
                 <img src="/images/EventImages/@Event.ImageUrl" class="img-fluid" alt="@Event.Name" style="width: auto" />
@@ -49,11 +49,11 @@ else
                 </div>
             </div>
         </div>
-        <div class="mx-auto my-2">
-            <h3>Ratings</h3>
+        <div class="mx-auto my-2 ">
 
             @if (ratings != null && ratings.Any())
             {
+                <h3>Ratings</h3>
                 <p><strong>Average score:</strong> @score / 5</p>
 
                 @foreach (var rating in ratings)
@@ -79,7 +79,10 @@ else
             }
             else
             {
-                <p>No ratings yet</p>
+                <div class="my-1 mx-4">
+                    <h3>Ratings</h3>
+                    <p>No ratings yet</p>
+                </div>
             }
         </div>
     </div>
