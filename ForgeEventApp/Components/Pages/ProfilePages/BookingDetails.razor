@@ -1,5 +1,7 @@
-﻿@page "/bookingdetails/{bookingId}"
+﻿@page "/profilepage/{UserId:int}/bookingdetails/{bookingId}"
+@using ForgeEventApp.Components.Layout
 @inject IBookingService IBookingService
+@layout ProfilePageLayout
 
 <PageTitle>Booking Details</PageTitle>
 
@@ -9,27 +11,54 @@
 }
 else
 {
-    <div class="details-container">
-        <h1>@booking.Event.Name</h1>
-        <img src="/images/EventImages/@booking.Event.ImageUrl" class="img-fluid" alt="@booking.Event.Name" style="width: 50%" />
-        <p class="mt-2 ">Address: @booking.Event.Address</p>
-        <p>Date: @booking.Event.Date.ToString("dddd, dd MMMM yyyy")</p>
-        <p>Description: @booking.Event.Description</p>
-        <p>Price: @booking.Event.Price $</p>
-        <p>Category: @booking.Event.Category</p>
+    <div class="d-flex">
+        <div class="details-container">
+            <h1 style="width: auto" class="text-center">@booking.Event.Name</h1>
+            <img src="/images/EventImages/@booking.Event.ImageUrl" class="img-fluid" alt="@booking.Event.Name" style="width: auto" />
+            <p class="mt-2 "><strong>Address:</strong> @booking.Event.Address</p>
+            <p><strong>Date:</strong> @booking.Event.Date.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
+            <p><strong>Description:</strong> @booking.Event.Description</p>
+            <p><strong>Price:</strong> @booking.Event.Price $</p>
+            <p><strong>Category:</strong> @booking.Event.Category</p>
 
-        <h5><b>Event Admin Information</b></h5>
-        <p>Admin Name: @booking.Event.User.FirstName @booking.Event.User.LastName</p>
-        <p>Phone: @booking.Event.User.PhoneNumber</p>
-        <p>Email: @booking.Event.User.Email</p>
+            <h5><b>Event Admin Information</b></h5>
+            <p><strong>Admin Name:</strong> @booking.Event.User.FirstName @booking.Event.User.LastName</p>
+            <p><strong>Phone:</strong> @booking.Event.User.PhoneNumber</p>
+            <p><strong>Email:</strong> @booking.Event.User.Email</p>
 
-        <a href="@($"rate/{booking.Event.Id}")" class="btn btn-primary mb-4">Rate the event</a>
+            <a href="@($"/profilepage/{UserId}/bookingdetails/{booking.Id}/rate/{booking.Event.Id}")" class="btn btn-primary mb-4">Rate the event</a>
+        </div>
+        <div class="mx-5 my-5">
+
+            @if (booking is not null )
+            {
+                <div class="card mx-auto mb-2" style="max-width: 600px;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Booking details:</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Number of tickets:</strong> @booking.TicketAmount</p>
+                        <p class="card-text"><strong>Ticket price:</strong> @booking.Event.Price $</p>
+                        <p class="card-text"><strong>Total price:</strong> @booking.TotalPrice $</p>
+                        <p class="card-text"><strong>Tickets sent to:</strong> @booking.User.Email</p>
+                        <p class="card-text"><strong>Purchased:</strong> @booking.CreatedAt.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p>No info</p>
+            }
+        </div>
     </div>
 }
 
 @code {
     [Parameter]
     public string? BookingId { get; set; }
+
+    [Parameter]
+    public int UserId { get; set; }
 
     private Booking? booking;
 

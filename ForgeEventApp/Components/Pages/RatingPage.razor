@@ -1,38 +1,91 @@
-﻿@page "/rate/{eventId:int}"
+﻿@page "/profilepage/{UserId:int}/bookingdetails/{BookingId:int}/rate/{EventId:int}"
+@using ForgeEventApp.Components.Layout
 @inject IRatingRepository RatingRepository
 @inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
+@layout ProfilePageLayout
+@rendermode InteractiveServer
+
 
 <PageTitle>Rate Event</PageTitle>
 
-<h3>Rate Event</h3>
-
-<EditForm method="post" Model="newRating" OnValidSubmit="HandleValidSubmit" class="container" FormName="addRating">
-    <DataAnnotationsValidator /> 
-    <ValidationSummary />
-    <div class="row justify-content-center">
-        <div class="mb-4" style="width: 100px">
-            <label for="score-input">Score</label>
-            <InputNumber @bind-Value="newRating.Score" Min="1" Max="5" class="form-control" id="score-input"/>
+@if (Event is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div style="d-flex">
+        <div style="">
+            <h1 class="text-center" style="width: 50%">@Event.Name</h1>
+            <img src="/images/EventImages/@Event.ImageUrl" class="img-fluid" alt="@Event.Name" style="width: 50%" />
         </div>
-
-        <div class="mb-4" style="width: 500px">
-            <InputTextArea @bind-Value="newRating.Comment" placeholder="Leave a comment..." class="form-control" />
+        <div class="d-flex">
+            <div>
+                <p class="mt-2"><strong>Address:</strong> @Event.Address</p>
+                <p><strong>Date:</strong> @Event.Date.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
+                <p><strong>Description:</strong> @Event.Description</p>
+                <p><strong>Price:</strong> @Event.Price $</p>
+                <p><strong>Category:</strong> @Event.Category</p
+                <h5><b>Event Admin Information</b></h5>
+                <p><strong>Admin Name:</strong> @Event.User.FirstName @Event.User.LastName</p>
+                <p><strong>Phone:</strong> @Event.User.PhoneNumber</p>
+                <p><strong>Email:</strong> @Event.User.Email</p>
+            </div>
+            <div class="mx-4 my-4">
+                @if(NewRating is null)
+                {
+                    <p>Loading...</p>
+                }
+                else
+                {
+                    <EditForm Enhance="true" Model="NewRating" OnValidSubmit="HandleValidSubmit" class="container d-flex flex-column" FormName="addRating">
+                        <DataAnnotationsValidator /> 
+                        <ValidationSummary />
+                        <div class="row justify-content-center">
+                            <div class="mb-4" style="width: 100px">
+                                <label for="score-input"><strong>Score</strong></label>
+                                <InputNumber @bind-Value="NewRating.Score" Min="1" Max="5" class="form-control" id="score-input"/>
+                            </div>
+                            
+                            <div class="mb-4" style="width: 500px">
+                                <InputTextArea @bind-Value="NewRating.Comment" placeholder="Leave a comment..." class="form-control" />
+                            </div>
+                            
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary mb-4 mx-2">Submit</button>
+                            <a class="btn btn-secondary mb-4 mx-2" href=@($"/profilepage/{UserId}/bookingdetails/{BookingId}")>Back</a>
+                        </div>
+                    </EditForm>
+                }
+            </div>
         </div>
-
     </div>
-    <button type="submit" class="btn btn-primary mb-4">Submit</button>
-</EditForm>
+}
 
 @code {
     [Parameter]
     public int EventId { get; set; }
 
-    [SupplyParameterFromForm]
-    public Rating newRating { get; set; } = new();
+    [Parameter]
+    public int UserId { get; set; }
+
+    [Parameter]
+    public int BookingId{ get; set; }
+
+    public Rating? NewRating { get; set; } = new();
+
+    private Event? Event;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
+    }
 
     private async Task HandleValidSubmit()
     {
-        await RatingRepository.AddRatingAsync(newRating, userId: 1, EventId);
+        await RatingRepository.AddRatingAsync(NewRating, UserId, EventId);
         
         NavigationManager.NavigateTo($"/event-details/{EventId}");
     }

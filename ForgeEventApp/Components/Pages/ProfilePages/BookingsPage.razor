@@ -9,7 +9,7 @@
 
 @if (bookings is null || !bookings.Any())
 {
-    <p>You have no booked event</p>
+    <p class="text-center">You have no booked event</p>
 }
 else
 {
@@ -20,7 +20,7 @@ else
         <div class="d-flex justify-content-center">
             <div class="col-3 p-1" style="width: 30%">
                 <div class="card h-100">
-                    <a href="@($"bookingdetails/{booking.Id}")" style="text-decoration: none; color: inherit;">
+                    <a href="@($"/profilepage/{UserId}/bookingdetails/{booking.Id}")" style="text-decoration: none; color: inherit;">
                         <img src="/images/EventImages/@booking.Event.ImageUrl" class="img-fluid card-img-top" alt="@booking.Event.Name" />
                         <div class="card-body">
                             <h5 class="card-title">@booking.Event.Name</h5>
