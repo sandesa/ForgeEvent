@@ -1,6 +1,7 @@
 ﻿using ForgeEventApp.Data;
 using ForgeEventApp.Interfaces;
 using ForgeEventApp.Models;
+using ForgeEventApp.Functions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,7 +36,7 @@ namespace ForgeEventApp.Repositories
                 TicketAmount = events.TicketAmount,
                 Date = events.Date,
                 CreatedAt = DateTime.Now,
-                ImageUrl = events.ImageUrl,
+                ImageUrl = EventMetricsCalculator.GenerateImg(),
             };
             await _context.Events.AddAsync(newEvent);
             await _context.SaveChangesAsync();

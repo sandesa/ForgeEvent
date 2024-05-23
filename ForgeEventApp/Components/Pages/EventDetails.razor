@@ -4,6 +4,7 @@
 @inject HttpClient HttpClient
 @inject ILocalStorageService LocalStorage
 @rendermode InteractiveServer
+@inject IValidations ValidDisplay
 
 <PageTitle>Event Details</PageTitle>
 
@@ -20,7 +21,7 @@ else
         <p><strong>Date:</strong> @Event.Date.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
         <p><strong>Description:</strong> @Event.Description</p>
         <p><strong>Price:</strong> @Event.Price $</p>
-        <p><strong>Category:</strong> @Event.Category</p>
+        <p><strong>Category:</strong> @ValidDisplay.DisplayCategory(Event.Category)</p>
 
         <h5><b>Event Admin Information</b></h5>
         <p><strong>Admin Name:</strong> @Event.User.FirstName @Event.User.LastName</p>

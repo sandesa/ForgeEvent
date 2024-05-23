@@ -1,6 +1,7 @@
 ﻿@page "/createeventpage"
 @inject HttpClient HttpClient
 @inject ForgeEventApp.Interfaces.IValidations FORMSUCCESS
+@inject IValidations ValidDisplay
 
 <PageTitle>Create</PageTitle>
 
@@ -20,11 +21,7 @@
                 <InputText id="name" @bind-Value="newEvent.Name" class="form-control" />
                 <ValidationMessage For="() => newEvent.Name" class="text-danger" />
             </div>
-            <div class="mb-3">
-                <label for="imageurl" class="form-label">ImageUrl:</label>
-                <InputText id="imageurl" @bind-Value="newEvent.ImageUrl" class="form-control" />
-                <ValidationMessage For="() => newEvent.ImageUrl" class="text-danger" />
-            </div>
+
             <div class="mb-3">
                 <label for="ticketamount" class="form-label">TicketAmount:</label>
                 <InputNumber id="ticketamount" @bind-Value="newEvent.TicketAmount" class="form-control" />
@@ -56,7 +53,7 @@
                   <InputSelect id="category" @bind-Value="newEvent.Category" class="form-control">
                         @foreach (var category in Enum.GetValues(typeof(Category)))
                         {
-                            <option value="@category">@category</option>
+                        <option value="@category">@ValidDisplay.DisplayCategory(category)</option>
                         }
                     </InputSelect>
                     <ValidationMessage For="() => newEvent.Category" class="text-danger" />

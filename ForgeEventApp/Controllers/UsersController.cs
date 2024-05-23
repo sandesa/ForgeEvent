@@ -18,10 +18,11 @@ namespace ForgeEventApp.Controllers
 			_userRepository = userRepository;
 		}
 
-		[HttpPost]
-		public async Task CreateUser(User user)
+		[HttpPost("{user}")]
+        public async Task<ActionResult<User>> CreateUser(User user)
 		{
 			await _userRepository.CreateUserAsync(user);
+			return Ok(user);
 		}
 
         [HttpGet("{id}")]

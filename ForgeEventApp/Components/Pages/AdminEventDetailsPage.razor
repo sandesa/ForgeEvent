@@ -5,6 +5,7 @@
 @inject HttpClient HttpClient
 @using ForgeEventApp.Components.Layout
 @layout ProfilePageLayout
+@inject IValidations ValidDisplay
 
 <PageTitle>Event Details</PageTitle>
 
@@ -40,7 +41,6 @@ else
                     <p><strong>Admin Name:</strong> @Event.User.FirstName @Event.User.LastName</p>
                     <p><strong>Phone:</strong> @Event.User.PhoneNumber</p>
                     <p><strong>Email:</strong> @Event.User.Email</p>
-
                 </div>
                 <div class="d-flex flex-row justify-content-end my-1" style="width: 100%; height: 60px">
                     <a class="btn btn-secondary mb-4 " href="/profilepage/@UserId/edit-event/@EventId">Edit</a>

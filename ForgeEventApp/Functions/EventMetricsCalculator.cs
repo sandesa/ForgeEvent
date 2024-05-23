@@ -75,5 +75,28 @@ namespace ForgeEventApp.Functions
 
             return total;
         }
+        public static string GenerateImg()
+        {
+            Random random = new Random();
+            int rand = random.Next(1, 11);
+
+            string imgURL = rand switch
+            {
+                1 => "Art-Exhibition.jpg",
+                2 => "comedian-2125295_1280.jpg",
+                3 => "fashion-show-1746590_1280.jpg",
+                4 => "Film-Festival.jpg",
+                5 => "Fitness-Bootcamp.jpg",
+                6 => "Food-Market.jpg",
+                7 => "MusicFestival.jpg",
+                8 => "rangers-1402096_1280.jpg",
+                9 => "Science-Fair.jpg",
+                10 => "Tech-News.jpg"
+            };
+
+            return imgURL;
+        }
+
+
     }
 }
