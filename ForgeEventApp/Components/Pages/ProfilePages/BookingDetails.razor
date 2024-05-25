@@ -1,4 +1,4 @@
-﻿@page "/profilepage/{UserId:int}/bookingdetails/{bookingId}"
+﻿@page "/profilepage/{UserId:int}/bookingdetails/{bookingId:int}"
 @using ForgeEventApp.Components.Layout
 @inject IBookingService IBookingService
 @inject IRatingRepository RatingRepository
@@ -94,13 +94,38 @@ else
             {
                 <p>No info</p>
             }
+
+            @if (RatingFromUser is not null && RatingFromUser.Any())
+            {
+                <h4 class="mt-5">Your Rating:</h4>
+                @foreach (var rating in RatingFromUser)
+                {
+                    <div class="card mx-auto mb-2" style="max-width: 600px;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div>
+                                @for (int i = 0; i < rating.Score; i++)
+                                {
+                                    <span><Icon Name="IconName.StarFill" Color="IconColor.Warning" Size="IconSize.x5" /></span>
+                                }
+                            </div>
+                            <div>
+                                <button style="border: none; background: inherit;" @onclick="async () => await RemoveRating(rating.Id)"><Icon Name="IconName.XLg" /></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@rating.Comment</p>
+                            <p class="card-text"><strong>Created:</strong> @rating.CreatedAt</p>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 }
 
 @code {
     [Parameter]
-    public string? BookingId { get; set; }
+    public int BookingId { get; set; }
 
     [Parameter]
     public int UserId { get; set; }
@@ -109,18 +134,14 @@ else
 
     public Rating? NewRating { get; set; } = new();
 
+    private IEnumerable<Rating>? RatingFromUser;
+
     private bool rateEvent = false;
 
     protected override async Task OnInitializedAsync()
     {
-        if (int.TryParse(BookingId, out int bookingId))
-        {
-            booking = await IBookingService.GetBookingById(bookingId);
-        }
-        else
-        {
-            //error page
-        }
+        booking = await IBookingService.GetBookingById(BookingId);
+        await LoadRatingsAsync();
     }
 
     private void RateStatusChange()
@@ -128,10 +149,23 @@ else
         rateEvent = !rateEvent;
     }
 
+    private async Task LoadRatingsAsync()
+    {
+        RatingFromUser = await RatingRepository.GetAllRatingsFromUserForEventAsync(booking.Event.Id, UserId);
+    }
+
+    private async Task RemoveRating(int ratingId)
+    {
+        await RatingRepository.RemoveRatingAsync(ratingId);
+        await LoadRatingsAsync();
+        StateHasChanged();
+    }
+
     private async Task HandleValidSubmit()
     {
         await RatingRepository.AddRatingAsync(NewRating, UserId, booking.Event.Id);
-
-        NavigationManager.NavigateTo($"/event-details/{booking.Event.Id}");
+        await LoadRatingsAsync();
+        RateStatusChange();
+        StateHasChanged();
     }
 }

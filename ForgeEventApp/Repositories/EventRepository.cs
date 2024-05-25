@@ -17,7 +17,7 @@ namespace ForgeEventApp.Repositories
         }
         public async Task<IEnumerable<Event>> GetAllEventsAsync()
         {
-            return await _context.Events.Select(e => e).ToListAsync();
+            return await _context.Events.Select(e => e).Include(e => e.User).ToListAsync();
         }
         public async Task<IEnumerable<Event>> GetAllEventsPostedByUserAsync(int userId)
         {
