@@ -1,7 +1,12 @@
 ﻿@page "/profilepage/{UserId:int}/bookingdetails/{bookingId}"
 @using ForgeEventApp.Components.Layout
 @inject IBookingService IBookingService
+@inject IRatingRepository RatingRepository
+@inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
 @layout ProfilePageLayout
+@rendermode InteractiveServer
+
 
 <PageTitle>Booking Details</PageTitle>
 
@@ -13,20 +18,60 @@ else
 {
     <div class="d-flex">
         <div class="details-container">
-            <h1 style="width: auto" class="text-center">@booking.Event.Name</h1>
-            <img src="/images/EventImages/@booking.Event.ImageUrl" class="img-fluid" alt="@booking.Event.Name" style="width: auto" />
-            <p class="mt-2 "><strong>Address:</strong> @booking.Event.Address</p>
-            <p><strong>Date:</strong> @booking.Event.Date.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
-            <p><strong>Description:</strong> @booking.Event.Description</p>
-            <p><strong>Price:</strong> @booking.Event.Price $</p>
-            <p><strong>Category:</strong> @booking.Event.Category</p>
+            <div>
+                <h1 style="width: auto" class="text-center">@booking.Event.Name</h1>
+                <img src="/images/EventImages/@booking.Event.ImageUrl" class="img-fluid" alt="@booking.Event.Name" style="width: auto" />
+            </div>
+            <div class="d-flex">
+                <div>
+                    <p class="mt-2 "><strong>Address:</strong> @booking.Event.Address</p>
+                    <p><strong>Date:</strong> @booking.Event.Date.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
+                    <p><strong>Description:</strong> @booking.Event.Description</p>
+                    <p><strong>Price:</strong> @booking.Event.Price $</p>
+                    <p><strong>Category:</strong> @booking.Event.Category</p>
+                    <h5><b>Event Admin Information</b></h5>
+                    <p><strong>Admin Name:</strong> @booking.Event.User.FirstName @booking.Event.User.LastName</p>
+                    <p><strong>Phone:</strong> @booking.Event.User.PhoneNumber</p>
+                    <p><strong>Email:</strong> @booking.Event.User.Email</p>
+                </div>
+                    @if (rateEvent)
+                    {
+                        <div class="mx-auto my-4">
+                        @if (NewRating is null)
+                        {
+                            <p>Loading...</p>
+                        }
+                        else
+                        {
+                            <EditForm Enhance="true" Model="NewRating" OnValidSubmit="HandleValidSubmit" class="container d-flex flex-column" FormName="addRating">
+                                <DataAnnotationsValidator />
+                                <ValidationSummary />
+                                <div class="row justify-content-center">
+                                    <div class="mb-4" style="width: 100px">
+                                        <label for="score-input"><strong>Score</strong></label>
+                                        <InputNumber @bind-Value="NewRating.Score" Min="1" Max="5" class="form-control" id="score-input" />
+                                    </div>
 
-            <h5><b>Event Admin Information</b></h5>
-            <p><strong>Admin Name:</strong> @booking.Event.User.FirstName @booking.Event.User.LastName</p>
-            <p><strong>Phone:</strong> @booking.Event.User.PhoneNumber</p>
-            <p><strong>Email:</strong> @booking.Event.User.Email</p>
+                                    <div class="mb-4" style="width: 500px">
+                                        <InputTextArea @bind-Value="NewRating.Comment" placeholder="Leave a comment..." class="form-control" />
+                                    </div>
 
-            <a href="@($"/profilepage/{UserId}/bookingdetails/{booking.Id}/rate/{booking.Event.Id}")" class="btn btn-primary mb-4">Rate the event</a>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-primary mb-4 mx-2">Submit</button>
+                                    <button class="btn btn-secondary mb-4 mx-2" @onclick="RateStatusChange">Back</button>
+                                </div>
+                            </EditForm>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="mx-auto my-2">
+                        <button class="btn btn-primary mb-4" @onclick="RateStatusChange">Rate the event</button>   
+                    </div>
+                }
+            </div>
         </div>
         <div class="mx-5 my-5">
 
@@ -62,6 +107,10 @@ else
 
     private Booking? booking;
 
+    public Rating? NewRating { get; set; } = new();
+
+    private bool rateEvent = false;
+
     protected override async Task OnInitializedAsync()
     {
         if (int.TryParse(BookingId, out int bookingId))
@@ -72,5 +121,17 @@ else
         {
             //error page
         }
+    }
+
+    private void RateStatusChange()
+    {
+        rateEvent = !rateEvent;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await RatingRepository.AddRatingAsync(NewRating, UserId, booking.Event.Id);
+
+        NavigationManager.NavigateTo($"/event-details/{booking.Event.Id}");
     }
 }

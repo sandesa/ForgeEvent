@@ -32,7 +32,7 @@ namespace ForgeEventApp.Services
         }
         public async Task<Booking> GetBookingById(int id)
         {
-            var booking = await _context.Bookings.Where(b => b.User.Id == id)
+            var booking = await _context.Bookings.Where(b => b.Id == id)
                                 .Include(b => b.Event)
                                 .Include(b => b.User)
                                 .FirstOrDefaultAsync();
