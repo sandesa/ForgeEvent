@@ -55,7 +55,7 @@ else
 
     @if (ratings != null && ratings.Any())
     {
-        <p><strong>Average score:</strong> @score / 5</p>
+        <p><strong>Average score:</strong> @score.ToString("0.#") / 5</p>
 
         @foreach (var rating in ratings)
         {

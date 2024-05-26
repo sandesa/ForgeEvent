@@ -77,7 +77,7 @@ namespace ForgeEventApp.Repositories
         {
             IEnumerable<Event> query = await GetAllEventsAsync();
 
-            if (category != (Category)9)
+            if (category != (Category)1)
             {
                 query = query.Where(e => e.Category == category);
             }

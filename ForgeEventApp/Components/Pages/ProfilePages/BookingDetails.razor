@@ -2,6 +2,7 @@
 @using ForgeEventApp.Components.Layout
 @inject IBookingService IBookingService
 @inject IRatingRepository RatingRepository
+@inject IValidations ValidDisplay
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
 @layout ProfilePageLayout
@@ -28,7 +29,7 @@ else
                     <p><strong>Date:</strong> @booking.Event.Date.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
                     <p><strong>Description:</strong> @booking.Event.Description</p>
                     <p><strong>Price:</strong> @booking.Event.Price $</p>
-                    <p><strong>Category:</strong> @booking.Event.Category</p>
+                    <p><strong>Category:</strong> @ValidDisplay.DisplayCategory(booking.Event.Category)</p>
                     <h5><b>Event Admin Information</b></h5>
                     <p><strong>Admin Name:</strong> @booking.Event.User.FirstName @booking.Event.User.LastName</p>
                     <p><strong>Phone:</strong> @booking.Event.User.PhoneNumber</p>
@@ -67,8 +68,8 @@ else
                 }
                 else
                 {
-                    <div class="mx-auto my-2">
-                        <button class="btn btn-primary mb-4" @onclick="RateStatusChange">Rate the event</button>   
+                    <div class="ms-auto my-2">
+                        <button class="btn btn-primary" @onclick="RateStatusChange">Rate the event</button>   
                     </div>
                 }
             </div>
@@ -100,7 +101,7 @@ else
                 <h4 class="mt-5">Your Rating:</h4>
                 @foreach (var rating in RatingFromUser)
                 {
-                    <div class="card mx-auto mb-2" style="max-width: 600px;">
+                    <div class="card mx-auto mb-2 rating-card-container">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <div>
                                 @for (int i = 0; i < rating.Score; i++)
@@ -108,8 +109,8 @@ else
                                     <span><Icon Name="IconName.StarFill" Color="IconColor.Warning" Size="IconSize.x5" /></span>
                                 }
                             </div>
-                            <div>
-                                <button style="border: none; background: inherit;" @onclick="async () => await RemoveRating(rating.Id)"><Icon Name="IconName.XLg" /></button>
+                            <div class="">
+                                <button class="remove-btn" @onclick="async () => await RemoveRating(rating.Id)"><Icon Name="IconName.XLg" Class="remove-btn" /></button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -149,6 +150,14 @@ else
         rateEvent = !rateEvent;
     }
 
+    private void ResetRating()
+    {
+        if(NewRating is not null)
+        {
+            NewRating = new();
+        }
+    }
+
     private async Task LoadRatingsAsync()
     {
         RatingFromUser = await RatingRepository.GetAllRatingsFromUserForEventAsync(booking.Event.Id, UserId);
@@ -167,5 +176,25 @@ else
         await LoadRatingsAsync();
         RateStatusChange();
         StateHasChanged();
+        ResetRating();
     }
 }
+
+<style>
+    .remove-btn {
+        border: none;
+        background: inherit;
+    }
+
+    .rating-card-container {
+        max-width: 600px;
+    }
+
+    .rating-card-container .remove-btn {
+        display: none;
+    }
+
+    .rating-card-container:hover .remove-btn {
+        display: block;
+    }
+</style>
