@@ -6,6 +6,7 @@
 @using ForgeEventApp.Components.Layout
 @layout ProfilePageLayout
 @inject IValidations ValidDisplay
+@rendermode InteractiveServer
 
 <PageTitle>Event Details</PageTitle>
 
@@ -45,7 +46,7 @@ else
                 <div class="d-flex flex-row justify-content-end my-1" style="width: 100%; height: 60px">
                     <a class="btn btn-secondary mb-4 " href="/profilepage/@UserId/edit-event/@EventId">Edit</a>
                     <a class="btn btn-primary mb-4 mx-4">View event statistics</a>
-                    <a class="btn btn-danger mb-4">Remove</a>
+                    <button class="btn btn-danger mb-4" @onclick="async () => await RemoveEvent()">Remove</button>
                 </div>
             </div>
         </div>
@@ -112,5 +113,11 @@ else
                 score = await RatingRepository.GetAverageScoreAsync(EventId);
             }
         }
+    }
+
+    private async Task RemoveEvent()
+    {
+        await EventRepository.RemoveEventAsync(EventId);
+        NavigationManager.NavigateTo($"/profilepage/{UserId}/posted-events");
     }
 }
