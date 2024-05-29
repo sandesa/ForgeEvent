@@ -22,11 +22,18 @@ else
         <p><strong>Description:</strong> @Event.Description</p>
         <p><strong>Price:</strong> @Event.Price $</p>
         <p><strong>Category:</strong> @ValidDisplay.DisplayCategory(Event.Category)</p>
-
         <h5><b>Event Admin Information</b></h5>
-        <p><strong>Admin Name:</strong> @Event.User.FirstName @Event.User.LastName</p>
-        <p><strong>Phone:</strong> @Event.User.PhoneNumber</p>
-        <p><strong>Email:</strong> @Event.User.Email</p>
+
+        @if(Event.User is not null)
+        {
+            <p><strong>Admin Name:</strong> @Event.User.FirstName @Event.User.LastName</p>
+            <p><strong>Phone:</strong> @Event.User.PhoneNumber</p>
+            <p><strong>Email:</strong> @Event.User.Email</p>
+        }
+        else
+        {
+            <p>No information</p>
+        }
 
         <a href="@($"ticketpurchasepage/{EventId}")" class="btn btn-primary">Order Tickets</a>
         <button @onclick="ToggleFavorite" class="btn btn-secondary">
@@ -48,7 +55,7 @@ else
 
     @if (ratings != null && ratings.Any())
     {
-        <p><strong>Average score:</strong> @score / 5</p>
+        <p><strong>Average score:</strong> @score.ToString("0.#") / 5</p>
 
         @foreach (var rating in ratings)
         {

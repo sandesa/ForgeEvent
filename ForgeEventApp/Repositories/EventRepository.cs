@@ -4,6 +4,7 @@ using ForgeEventApp.Models;
 using ForgeEventApp.Functions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace ForgeEventApp.Repositories
 {
@@ -17,7 +18,7 @@ namespace ForgeEventApp.Repositories
         }
         public async Task<IEnumerable<Event>> GetAllEventsAsync()
         {
-            return await _context.Events.Select(e => e).ToListAsync();
+            return await _context.Events.Select(e => e).Include(e => e.User).ToListAsync();
         }
         public async Task<IEnumerable<Event>> GetAllEventsPostedByUserAsync(int userId)
         {
@@ -77,7 +78,7 @@ namespace ForgeEventApp.Repositories
         {
             IEnumerable<Event> query = await GetAllEventsAsync();
 
-            if (category != (Category)9)
+            if (category != (Category)1)
             {
                 query = query.Where(e => e.Category == category);
             }
@@ -137,8 +138,23 @@ namespace ForgeEventApp.Repositories
 
         public async Task<Event> GetEventFromIdAsync(int eventId)
         {
-            var evnt = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventId);
-            return evnt is null ? throw new InvalidOperationException($"Cannot find event with ID {eventId}") : evnt;
+            var Event = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventId);
+            return Event is null ? throw new InvalidOperationException($"Cannot find event with ID {eventId}") : Event;
+        }
+
+        public async Task RemoveEventAsync(int eventId)
+        {
+            var eventToRemove = await GetEventFromIdAsync(eventId);
+
+            if(eventToRemove is not null)
+            {
+                _context.Events.Remove(eventToRemove);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException($"Cannot find and remove event with ID {eventId}");
+            }
         }
     }
 }

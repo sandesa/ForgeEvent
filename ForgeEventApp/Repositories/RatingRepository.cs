@@ -2,6 +2,7 @@
 using ForgeEventApp.Interfaces;
 using ForgeEventApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ForgeEventApp.Repositories
 {
@@ -48,5 +49,34 @@ namespace ForgeEventApp.Repositories
 			}
 			return score / ratings.Count();
 		}
-	}
+
+        public async Task<IEnumerable<Rating>> GetAllRatingsFromUserForEventAsync(int eventId, int userId)
+        {
+            var ratings = await _context.Ratings.Where(r => r.Event.Id == eventId && r.User.Id == userId).ToListAsync();
+            return ratings is null ? throw new InvalidOperationException($"Cannot find ratings for event with ID {eventId} from user with ID {userId}") : ratings;
+        }
+
+        public async Task<Rating> GetRatingFromIdAsync(int ratingId)
+        {
+			var rating = await _context.Ratings.FirstOrDefaultAsync(r => r.Id == ratingId);
+            return rating is null ? throw new InvalidOperationException($"Cannot find rating with ID {ratingId}") : rating;
+
+        }
+
+        public async Task RemoveRatingAsync(int ratingId)
+        {
+			var rating = await GetRatingFromIdAsync(ratingId);
+
+			if(rating is not null)
+			{
+				_context.Ratings.Remove(rating);
+				await _context.SaveChangesAsync();
+			}
+			else
+			{
+				throw new InvalidOperationException($"Cannot find and remove rating with ID {ratingId}");
+			}
+        }
+
+    }
 }

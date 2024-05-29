@@ -6,7 +6,8 @@ namespace ForgeEventApp.Models
 {
     public enum Category
     {
-        Music = 1,
+        All_Category = 1,
+        Music,
         Technology,
         Food_And_Drinks,
         Sports,
@@ -14,7 +15,6 @@ namespace ForgeEventApp.Models
         Fashion,
         Comedy,
         Film,
-        All_Category
     }
     public class Event
     {
