@@ -6,6 +6,7 @@
 @using ForgeEventApp.Components.Layout
 @layout ProfilePageLayout
 @inject IValidations ValidDisplay
+@rendermode InteractiveServer
 
 <PageTitle>Event Details</PageTitle>
 
@@ -43,9 +44,20 @@ else
                     <p><strong>Email:</strong> @Event.User.Email</p>
                 </div>
                 <div class="d-flex flex-row justify-content-end my-1" style="width: 100%; height: 60px">
-                    <a class="btn btn-secondary mb-4 " href="/profilepage/@UserId/edit-event/@EventId">Edit</a>
-                    <a class="btn btn-primary mb-4 mx-4">View event statistics</a>
-                    <a class="btn btn-danger mb-4">Remove</a>
+                    @if (!alertDelete)
+                    {
+                        <a class="btn btn-secondary mb-4 " href="/profilepage/@UserId/edit-event/@EventId">Edit</a>
+                        <a class="btn btn-primary mb-4 mx-4">View event statistics</a>
+                        <button class="btn btn-danger mb-4" @onclick="AlertDeleteChange">Remove</button>
+                    }
+                    else
+                    {
+                        <div class="d-flex">
+                            <p class="mt-2">Are you sure you want to <strong>remove</strong> the event?</p>
+                            <button class="btn btn-danger mb-4 mx-2" @onclick="async () => await RemoveEvent()">Yes</button>
+                            <button class="btn btn-secondary mb-4" @onclick="AlertDeleteChange">No</button>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -99,6 +111,7 @@ else
     private IEnumerable<Rating>? ratings;
     private decimal score = 0;
     private int ticketsLeft = 0;
+    private bool alertDelete = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -112,5 +125,16 @@ else
                 score = await RatingRepository.GetAverageScoreAsync(EventId);
             }
         }
+    }
+
+    private async Task RemoveEvent()
+    {
+        await EventRepository.RemoveEventAsync(EventId);
+        NavigationManager.NavigateTo($"/profilepage/{UserId}/posted-events");
+    }
+
+    private void AlertDeleteChange()
+    {
+        alertDelete = !alertDelete;
     }
 }
