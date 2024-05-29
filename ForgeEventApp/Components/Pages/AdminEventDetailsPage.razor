@@ -27,7 +27,7 @@ else
                     <p><strong>Date:</strong> @Event.Date.ToString("dddd, dd MMMM yyyy, kl: HH:MM")</p>
                     <p><strong>Description:</strong> @Event.Description</p>
                     <p><strong>Price:</strong> @Event.Price $</p>
-                    <p><strong>Category:</strong> @Event.Category</p>
+                    <p><strong>Category:</strong> @ValidDisplay.DisplayCategory(Event.Category)</p>
                     @if(ticketsLeft > 0)
                     {
                         <p><strong>Ticktes left:</strong> @ticketsLeft</p>

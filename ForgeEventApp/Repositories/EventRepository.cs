@@ -17,7 +17,7 @@ namespace ForgeEventApp.Repositories
         }
         public async Task<IEnumerable<Event>> GetAllEventsAsync()
         {
-            return await _context.Events.Select(e => e).ToListAsync();
+            return await _context.Events.Select(e => e).Include(e => e.User).ToListAsync();
         }
         public async Task<IEnumerable<Event>> GetAllEventsPostedByUserAsync(int userId)
         {
@@ -77,7 +77,7 @@ namespace ForgeEventApp.Repositories
         {
             IEnumerable<Event> query = await GetAllEventsAsync();
 
-            if (category != (Category)9)
+            if (category != (Category)1)
             {
                 query = query.Where(e => e.Category == category);
             }
