@@ -11,12 +11,9 @@ namespace ForgeEventApp.Interfaces
 		Task CreateEventAsync(Event events);
 		Task<Event> GetEventWithAdminDetailsAsync(int eventId);
 		Task<Event> GetEventFromIdAsync(int eventId);
-        Task<IEnumerable<(Category, string)>> GetCategoryAsync();
 		Task<IEnumerable<Event>> SearchEventAsync(Category category, string searchString);
 		Task UpdateTicketAmountAsync(int eventId, int newTicketAmount);
 		Task UpdateEventAsync(Event updatedEvent);
 		Task RemoveEventAsync(int eventId);
-        //Task<Dictionary<Category, string>> GetCategoryAsync();
-        //Dictionary<Category, string> CategoryDisplayNames { get; }
     }
 }

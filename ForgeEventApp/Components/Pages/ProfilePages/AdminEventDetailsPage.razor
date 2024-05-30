@@ -1,7 +1,5 @@
 ﻿@page "/profilepage/{UserId:int}/admin-event-details/{EventId:int}"
 @inject NavigationManager NavigationManager
-@inject IRatingRepository RatingRepository
-@inject IEventRepository EventRepository
 @inject HttpClient HttpClient
 @using ForgeEventApp.Components.Layout
 @layout ProfilePageLayout
@@ -117,19 +115,19 @@ else
     {
         {
             Event = await HttpClient.GetFromJsonAsync<Event>($"https://localhost:7206/api/Events/{EventId}");
-            ratings = await RatingRepository.GetAllRatingsForEventAsync(EventId);
-            ticketsLeft = await EventRepository.GetTicketAmountAsync(EventId);
+            ratings = await HttpClient.GetFromJsonAsync<IEnumerable<Rating>>($"https://localhost:7206/api/Ratings/{EventId}");
+            ticketsLeft = await HttpClient.GetFromJsonAsync<int>($"https://localhost:7206/api/Events/ticket/{EventId}");
 
             if(ratings != null && ratings.Any())
             {
-                score = await RatingRepository.GetAverageScoreAsync(EventId);
+                score = await HttpClient.GetFromJsonAsync<decimal>($"https://localhost:7206/api/Ratings/avargerating/{EventId}");
             }
         }
     }
 
     private async Task RemoveEvent()
     {
-        await EventRepository.RemoveEventAsync(EventId);
+        await HttpClient.DeleteFromJsonAsync<Event>($"https://localhost:7206/api/Events/delete/{EventId}");
         NavigationManager.NavigateTo($"/profilepage/{UserId}/posted-events");
     }
 

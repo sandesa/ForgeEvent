@@ -30,36 +30,6 @@ namespace ForgeEventApp.Controllers
 			return Ok(events);
 		}
 
-		[HttpGet("categories")]
-		public async Task<ActionResult<IEnumerable<string>>> GetCategoriesDisplay()
-		{
-			IEnumerable<(Category, string)> categories = await _eventRepository.GetCategoryAsync();
-
-			IEnumerable<string> categoryDisplay = categories.Select(c => c.Item2);
-
-			return Ok(categoryDisplay);
-		}
-		[HttpGet("enums")]
-        public async Task<ActionResult<IEnumerable<string>>> GetCategoriesEnum()
-        {
-            IEnumerable<(Category, string)> categories = await _eventRepository.GetCategoryAsync();
-
-            IEnumerable<Category> categoryDisplay = categories.Select(c => c.Item1);
-
-            return Ok(categoryDisplay);
-        }
-        [HttpGet("select/{category}")]
-        public async Task<ActionResult<Category>> GetCategories(string category)
-        {
-            IEnumerable<(Category, string)> categories = await _eventRepository.GetCategoryAsync();
-
-			var findCategory = categories.FirstOrDefault(c => c.Item2 == category);
-
-			Category categoryDisplay = findCategory.Item1;
-
-            return Ok(categoryDisplay);
-        }
-
         [HttpGet("{id}")]
 		public async Task<ActionResult<Event>> GetEventDetails(int id)
 		{
@@ -68,7 +38,15 @@ namespace ForgeEventApp.Controllers
 			return Ok(eventDetatils);
 		}
 
-		[HttpGet("search")]
+        [HttpGet("ticket/{id}")]
+        public async Task<ActionResult<int>> GetTicketAmount(int id)
+        {
+            var ticketAmount = await _eventRepository.GetTicketAmountAsync(id);
+
+            return Ok(ticketAmount);
+        }
+
+        [HttpGet("search")]
 		public async Task<ActionResult<IEnumerable<Event>>> EventSearch([FromQuery] Category category, [FromQuery] string? searchString)
 		{
 			var searchEvent = await _eventRepository.SearchEventAsync(category, searchString);
@@ -83,5 +61,13 @@ namespace ForgeEventApp.Controllers
 
 			return CreatedAtAction(nameof(GetEventDetails), new { id = events.Id }, events);
         }
+		[HttpDelete("delete/{id}")]
+        public async Task<ActionResult<Event>> DeleteEvent(int id)
+        {
+			await _eventRepository.RemoveEventAsync(id);
+
+            return NoContent();
+        }
+
     }
 }
