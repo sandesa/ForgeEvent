@@ -54,9 +54,8 @@ namespace ForgeEventApp.Repositories
         }
 
         public async Task UpdateTicketAmountAsync(int eventId, int newTicketAmount)
-        {                      
-            
-          var ev = await _context.Events.FindAsync(eventId);
+        {                                  
+            var ev = await _context.Events.FindAsync(eventId);
             if (ev != null)
             {
                 ev.TicketAmount = newTicketAmount;
@@ -79,6 +78,7 @@ namespace ForgeEventApp.Repositories
 
             return query;
         }
+
        public async Task<int> GetTicketAmountAsync(int id)
         {
             Event ev = await _context.Events.FindAsync(id);

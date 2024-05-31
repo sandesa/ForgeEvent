@@ -3,7 +3,7 @@
 @using ForgeEventApp.Interfaces
 @using ForgeEventApp.Models
 @inject HttpClient httpClient
-@inject IBookingService IBookingService
+@inject IBookingRepository BookingRepository
 @layout ProfilePageLayout
 
 <PageTitle>Profile Page</PageTitle>
@@ -49,6 +49,6 @@
     protected override async Task OnParametersSetAsync()
     {
         profile = await httpClient.GetFromJsonAsync<User>($"https://localhost:7206/api/Users/{UserId}");
-        bookings = await IBookingService.GetAllBookingsByUserIdAsync(UserId);
+        bookings = await BookingRepository.GetAllBookingsByUserIdAsync(UserId);
     }
 }

@@ -4,13 +4,13 @@ using ForgeEventApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace ForgeEventApp.Services
+namespace ForgeEventApp.Repositories
 {
-    public class BookingService : IBookingService
+    public class BookingRepository : IBookingRepository
     {
         private readonly AppDbContext _context;
 
-        public BookingService(AppDbContext context)
+        public BookingRepository(AppDbContext context)
         {
             _context = context;
         }
@@ -30,7 +30,7 @@ namespace ForgeEventApp.Services
                                 .ToListAsync();
             return bookings;
         }
-        public async Task<Booking> GetBookingById(int id)
+        public async Task<Booking> GetBookingByIdAsync(int id)
         {
             var booking = await _context.Bookings.Where(b => b.Id == id)
                                 .Include(b => b.Event)
