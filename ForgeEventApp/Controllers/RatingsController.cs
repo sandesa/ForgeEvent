@@ -27,6 +27,14 @@ namespace ForgeEventApp.Controllers
 			}
 			return Ok(ratings);
 		}
+        [HttpGet("avargerating/{id}")]
+        public async Task<ActionResult<decimal>> GetAveregelRatingsForEvent(int id)
+        {
+            var ratings = await _ratingRepository.GetAverageScoreAsync(id);
 
-	}
+            return Ok(ratings);
+        }
+
+
+    }
 }
