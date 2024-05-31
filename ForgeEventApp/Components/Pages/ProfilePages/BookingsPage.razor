@@ -1,6 +1,7 @@
 ﻿@page "/profilepage/{UserId:int}/bookings"
 @using ForgeEventApp.Components.Layout
 @inject IBookingRepository BookingRepository
+@inject HttpClient HttpClient
 @layout ProfilePageLayout
 
 <PageTitle>Bookings</PageTitle>
@@ -42,6 +43,6 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        bookings = await BookingRepository.GetAllBookingsByUserIdAsync(UserId);
+        bookings = await HttpClient.GetFromJsonAsync<IEnumerable<Booking>>($"https://localhost:7206/api/Bookings/{UserId}");
     }
 }
