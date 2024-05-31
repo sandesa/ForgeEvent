@@ -1,6 +1,6 @@
 ﻿@page "/profilepage/{UserId:int}/bookings"
 @using ForgeEventApp.Components.Layout
-@inject IBookingService IBookingService
+@inject IBookingRepository BookingRepository
 @layout ProfilePageLayout
 
 <PageTitle>Bookings</PageTitle>
@@ -42,6 +42,6 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-            bookings = await IBookingService.GetAllBookingsByUserIdAsync(UserId);
+        bookings = await BookingRepository.GetAllBookingsByUserIdAsync(UserId);
     }
 }

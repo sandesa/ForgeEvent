@@ -1,6 +1,6 @@
 ﻿@page "/profilepage/{UserId:int}/bookingdetails/{bookingId:int}"
 @using ForgeEventApp.Components.Layout
-@inject IBookingService IBookingService
+@inject IBookingRepository BookingRepository
 @inject IRatingRepository RatingRepository
 @inject IValidations ValidDisplay
 @inject NavigationManager NavigationManager
@@ -141,7 +141,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        booking = await IBookingService.GetBookingById(BookingId);
+        booking = await HttpClient.GetFromJsonAsync<Booking>($"https://localhost:7206/api/Bookings/booking/{BookingId}");
         await LoadRatingsAsync();
     }
 

@@ -10,11 +10,11 @@ namespace ForgeEventApp.Services
     public class TicketService : ITicketService
     {
         private readonly IEventRepository _eventRepository;
-        private readonly IBookingService _bookingService;
+        private readonly IBookingRepository _bookingService;
         private readonly IUserRepository _userRepository;
         private readonly NavigationManager _navigationManager;
 
-        public TicketService(IEventRepository eventRepository, IBookingService bookingService, NavigationManager navigationManager, IUserRepository userRepository)
+        public TicketService(IEventRepository eventRepository, IBookingRepository bookingService, NavigationManager navigationManager, IUserRepository userRepository)
         {
             _eventRepository = eventRepository;
             _bookingService = bookingService;

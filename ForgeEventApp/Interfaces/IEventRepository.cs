@@ -16,7 +16,5 @@ namespace ForgeEventApp.Interfaces
 		Task UpdateTicketAmountAsync(int eventId, int newTicketAmount);
 		Task UpdateEventAsync(Event updatedEvent);
 		Task RemoveEventAsync(int eventId);
-        //Task<Dictionary<Category, string>> GetCategoryAsync();
-        //Dictionary<Category, string> CategoryDisplayNames { get; }
     }
 }
